@@ -13,6 +13,7 @@ val Pink40 = Color(0xFF7D5260)
 //Paleta de Colores
 val DarkGreen = Color(0xFF024029)
 val Green = Color(0xFF025939)
+val Green2 = Color(0xFF025940)
 val GreenTopics = Color(0xFF7CA697)
 val LightGreen = Color(0xFFC1D9D2)
 val GreenShop = Color(0xFFC5D9D3)
