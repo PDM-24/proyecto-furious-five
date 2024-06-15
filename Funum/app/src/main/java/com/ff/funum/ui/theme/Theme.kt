@@ -14,11 +14,22 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import com.ff.funum.R
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80
+)
+
+val Chewy = FontFamily(
+    Font(R.font.chewy) // Reemplaza con el nombre correcto del archivo de fuente
+)
+
+val Chilanka = FontFamily(
+    Font(R.font.chilanka) // Reemplaza con el nombre correcto del archivo de fuente
 )
 
 private val LightColorScheme = lightColorScheme(
