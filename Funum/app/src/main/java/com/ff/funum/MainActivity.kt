@@ -29,10 +29,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ff.funum.screens.Home
+import com.ff.funum.screens.LessonsViewModel
 import com.ff.funum.screens.Profile
 import com.ff.funum.screens.Ranking
 import com.ff.funum.screens.Screens
@@ -42,6 +44,7 @@ import com.ff.funum.ui.theme.FunumTheme
 import com.ff.funum.ui.theme.White
 
 class MainActivity : ComponentActivity() {
+    private val viewModel = LessonsViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -51,7 +54,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MyBottomAppBar()
+                    MyBottomAppBar(viewModel = viewModel)
                 }
             }
         }
@@ -59,7 +62,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyBottomAppBar(){
+fun MyBottomAppBar(viewModel: LessonsViewModel){
     val navigationController = rememberNavController()
     val context = LocalContext.current.applicationContext
     val selected = remember {
@@ -132,7 +135,7 @@ fun MyBottomAppBar(){
         NavHost(navController = navigationController,
             startDestination = Screens.Home.screen,
             modifier = Modifier.padding(paddingValues)){
-            composable(Screens.Home.screen){ Home()}
+            composable(Screens.Home.screen){ Home(viewModel)}
             composable(Screens.Ranking.screen){ Ranking()}
             composable(Screens.Shop.screen){ Shop()}
             composable(Screens.Profile.screen){ Profile()}
@@ -142,10 +145,10 @@ fun MyBottomAppBar(){
     }
 }
 
-@Preview
+/*@Preview
 @Composable
 fun MyBottomBarPreview(){
     BottomAppBar {
         MyBottomAppBar()
     }
-}
+}*/

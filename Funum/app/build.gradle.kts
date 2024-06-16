@@ -50,6 +50,13 @@ android {
 }
 
 dependencies {
+    val retrofit_version = "2.11.0"
+    // Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:$retrofit_version")
+    implementation ("com.squareup.retrofit2:converter-gson:$retrofit_version")
+
+    // Coil
+    implementation(libs.coil.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
