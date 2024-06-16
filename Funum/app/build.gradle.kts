@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.runtime.livedata)
     val retrofit_version = "2.11.0"
     // Retrofit
     implementation ("com.squareup.retrofit2:retrofit:$retrofit_version")
