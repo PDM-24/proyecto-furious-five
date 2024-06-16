@@ -47,3 +47,20 @@ data class TopicAPI(
     @SerializedName(value = Constants.TOPIC_PONDERATION)
     val ponderacion : Int = 0
 )
+data class UpdateTopic(
+    @SerializedName(value = Constants.TOPIC_NAME)
+    val nombre :String = "",
+    @SerializedName(value = Constants.TOPIC_CONTENT)
+    val contenido :String = "",
+    @SerializedName(value = Constants.TOPIC_PONDERATION)
+    val ponderacion :Int = 0,
+    @SerializedName(value = Constants.TOPIC_VISIBILITY)
+    val visibilidad :Boolean = false,
+    @SerializedName(value = Constants.TOPIC_IMAGE)
+    val imagen :List<String> = arrayListOf(""),
+    @SerializedName(value = Constants.TOPIC_ID)
+    val _id :String ="",
+    @SerializedName(value = "idLeccion")
+    val idLeccion :String =""
+
+)
