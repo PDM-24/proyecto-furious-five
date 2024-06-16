@@ -1,4 +1,4 @@
-package com.ff.funum.screens
+package com.ff.funum.ui.screens
 
 sealed class Screens (val screen: String){
     data object Home: Screens("home")

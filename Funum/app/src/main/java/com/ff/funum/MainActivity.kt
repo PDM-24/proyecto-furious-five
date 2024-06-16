@@ -33,12 +33,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ff.funum.screens.Home
-import com.ff.funum.screens.LessonsViewModel
-import com.ff.funum.screens.Profile
-import com.ff.funum.screens.Ranking
-import com.ff.funum.screens.Screens
-import com.ff.funum.screens.Shop
+import com.ff.funum.ui.screens.Home
+import com.ff.funum.ui.screens.LessonsViewModel
+import com.ff.funum.ui.screens.Profile
+import com.ff.funum.ui.screens.Ranking
+import com.ff.funum.ui.screens.Screens
+import com.ff.funum.ui.screens.Shop
 import com.ff.funum.ui.theme.DarkGreen
 import com.ff.funum.ui.theme.FunumTheme
 import com.ff.funum.ui.theme.White
@@ -135,10 +135,10 @@ fun MyBottomAppBar(viewModel: LessonsViewModel){
         NavHost(navController = navigationController,
             startDestination = Screens.Home.screen,
             modifier = Modifier.padding(paddingValues)){
-            composable(Screens.Home.screen){ Home(viewModel)}
-            composable(Screens.Ranking.screen){ Ranking()}
-            composable(Screens.Shop.screen){ Shop()}
-            composable(Screens.Profile.screen){ Profile()}
+            composable(Screens.Home.screen){ Home(viewModel) }
+            composable(Screens.Ranking.screen){ Ranking() }
+            composable(Screens.Shop.screen){ Shop() }
+            composable(Screens.Profile.screen){ Profile() }
 
         }
 
