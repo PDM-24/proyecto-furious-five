@@ -30,12 +30,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.ff.funum.ui.screens.Home
 import com.ff.funum.ui.screens.LessonsViewModel
 import com.ff.funum.ui.screens.Profile
+import com.ff.funum.ui.screens.Quiz.QuizScreen
 import com.ff.funum.ui.screens.Ranking
 import com.ff.funum.ui.screens.Screens
 import com.ff.funum.ui.screens.Shop
@@ -139,7 +142,16 @@ fun MyBottomAppBar(viewModel: LessonsViewModel){
             composable(Screens.Ranking.screen){ Ranking() }
             composable(Screens.Shop.screen){ Shop() }
             composable(Screens.Profile.screen){ Profile() }
-
+            composable(
+                route = "${Screens.Quiz.screen}/{examId}",
+                arguments = listOf(
+                    navArgument("examId"){
+                        type = NavType.StringType
+                    }
+                )
+            ){ backStackEntry ->
+                QuizScreen(navController = navigationController, examId = backStackEntry.arguments?.getString("examId"))
+            }
         }
 
     }

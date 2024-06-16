@@ -46,9 +46,12 @@ fun QuizScreen(
     quizViewModel: QuizViewModel = viewModel(),
     innerPadding: Dp = 0.dp,
     navController: NavController,
-    token: String? = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZmODJkODYyNTA0MDI1YWE2N2IzNWIiLCJleHAiOjE3MTk2MDUzMjAsImlhdCI6MTcxODMwOTMyMH0.YAPbZlCrhggIdJUtih0o3MbJvHX-xOGYxipTKH1C_Es",
+    token: String? = "",
     examId: String? = null
 ) {
+
+    //Implementar funcion para obtener token y removerlo de los paramentros
+
     val QuizScreenState = quizViewModel.uiState.collectAsState()
 
     LaunchedEffect(true) {
