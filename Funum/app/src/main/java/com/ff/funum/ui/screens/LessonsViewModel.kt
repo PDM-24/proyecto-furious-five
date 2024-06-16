@@ -1,4 +1,4 @@
-package com.ff.funum.screens
+package com.ff.funum.ui.screens
 
 import android.os.Build
 import android.util.Log

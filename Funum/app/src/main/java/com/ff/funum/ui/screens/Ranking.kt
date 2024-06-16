@@ -1,4 +1,4 @@
-package com.ff.funum.screens
+package com.ff.funum.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

@@ -25,4 +25,31 @@ interface APIService {
     @PATCH(value = Constants.API_PATH+Constants.Topic_Path+Constants.Toggle_Topic_Visibility_Path+"{id}")
     suspend fun toggleTopicVisibility(@Path("id", encoded = false) idTopic:String,@Header("authorization") token:String):TopicAPI
 
+    @Headers(
+        value = ["Content-Type: application/json"]
+    )
+    @GET(value = "${Constants.API_PATH}${Constants.EXAM_ROUTE}/{id}")
+    suspend fun getExam(
+        @Header("Authorization") token: String,
+        @Path("id") examId: String
+    ): ExamResponse
+
+    @Headers(
+        value = ["Content-Type: application/json"]
+    )
+    @PATCH(value = "${Constants.API_PATH}${Constants.EXAM_ROUTE}${Constants.START_EXAM}/{id}")
+    suspend fun beginExam(
+        @Header("Authorization") token: String,
+        @Path("id") examId: String
+    ): BeginOrFinish_Exam_Response
+
+    @Headers(
+        value = ["Content-Type: application/json"]
+    )
+    @PATCH(value = "${Constants.API_PATH}${Constants.EXAM_ROUTE}${Constants.FINISH_EXAM}/{id}")
+    suspend fun finishExam(
+        @Header("Authorization") token: String,
+        @Path("id") examId: String,
+        @Body endExamBody: EndExamBody
+    ): BeginOrFinish_Exam_Response
 }
