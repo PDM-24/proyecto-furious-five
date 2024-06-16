@@ -25,11 +25,11 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 val Chewy = FontFamily(
-    Font(R.font.chewy) // Reemplaza con el nombre correcto del archivo de fuente
+    Font(R.font.chewy)
 )
 
 val Chilanka = FontFamily(
-    Font(R.font.chilanka) // Reemplaza con el nombre correcto del archivo de fuente
+    Font(R.font.chilanka)
 )
 
 private val LightColorScheme = lightColorScheme(

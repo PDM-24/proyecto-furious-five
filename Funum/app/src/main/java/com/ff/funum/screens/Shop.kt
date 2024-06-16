@@ -60,10 +60,8 @@ fun Shop(){
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Green)
-                .padding(12.dp)
+                .padding(18.dp)
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         Row (
             modifier = Modifier
@@ -164,7 +162,7 @@ fun AvatarItem (imageResId : Int, cost: Int){
             modifier = Modifier.padding(8.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.picoins), // Reemplaza con el ícono correspondiente
+                painter = painterResource(id = R.drawable.picoins),
                 contentDescription = null,
                 modifier = Modifier.size(16.dp)
             )

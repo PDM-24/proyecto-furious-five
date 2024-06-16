@@ -78,7 +78,8 @@ fun MyBottomAppBar(){
                     }
                 },
                 modifier = Modifier.weight(1f)) {
-                    Icon(painter = painterResource(id = R.drawable.menu), contentDescription = null,
+                    Icon(painter = painterResource(id = R.drawable.menu),
+                        contentDescription = null,
                         modifier = Modifier
                             .size(100.dp)
                             .border(
@@ -94,7 +95,8 @@ fun MyBottomAppBar(){
                     }
                 },
                     modifier = Modifier.weight(1f)) {
-                    Icon(painter = painterResource(id = R.drawable.ranking), contentDescription = null,
+                    Icon(painter = painterResource(id = R.drawable.ranking),
+                        contentDescription = null,
                         modifier = Modifier
                             .size(100.dp),
                         tint = Color.Unspecified)
@@ -106,7 +108,9 @@ fun MyBottomAppBar(){
                     }
                 },
                     modifier = Modifier.weight(1f)) {
-                    Icon(painter = painterResource(id = R.drawable.picoins), contentDescription = null, modifier = Modifier.size(100.dp),
+                    Icon(painter = painterResource(id = R.drawable.picoins),
+                        contentDescription = null,
+                        modifier = Modifier.size(100.dp),
                         tint = Color.Unspecified)
                 }
                 IconButton(onClick = {
@@ -116,7 +120,9 @@ fun MyBottomAppBar(){
                     }
                 },
                     modifier = Modifier.weight(1f)) {
-                    Icon(painter = painterResource(id = R.drawable.profile), contentDescription = null, modifier = Modifier.size(100.dp),
+                    Icon(painter = painterResource(id = R.drawable.profile),
+                        contentDescription = null,
+                        modifier = Modifier.size(100.dp),
                         tint = Color.Unspecified)
                 }
 

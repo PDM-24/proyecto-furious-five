@@ -11,6 +11,7 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 //Paleta de Colores
+val ProgressBar = Color(0xFFF5AC08)
 val DarkGreen = Color(0xFF024029)
 val Green = Color(0xFF025939)
 val GreenTopics = Color(0xFF7CA697)
