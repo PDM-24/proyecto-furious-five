@@ -1,5 +1,6 @@
 package com.ff.funum.data.api
 
+import coil.memory.MemoryCache
 import com.ff.funum.utils.Constants
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -52,4 +53,9 @@ interface APIService {
         @Path("id") examId: String,
         @Body endExamBody: EndExamBody
     ): BeginOrFinish_Exam_Response
+
+    //Register USER
+    @Headers(value = ["Content-type: application/json"])
+    @POST(value = Constants.API_PATH + Constants.AUTH_PATH + Constants.REGISTER_PATH)
+    suspend fun registerUser(@Body user : RegisterApi) : ApiResponseSuccessful
 }
