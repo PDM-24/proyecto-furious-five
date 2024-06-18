@@ -1,9 +1,12 @@
 package com.ff.funum
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -34,21 +37,28 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ff.funum.screens.Home
-import com.ff.funum.screens.LessonsViewModel
-import com.ff.funum.screens.Profile
-import com.ff.funum.screens.Ranking
-import com.ff.funum.screens.Screens
-import com.ff.funum.screens.Shop
 import com.ff.funum.screens.Config
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.ff.funum.ui.screens.Home
+import com.ff.funum.ui.screens.LessonsViewModel
+import com.ff.funum.ui.screens.Profile
+import com.ff.funum.ui.screens.Quiz.QuizScreen
+import com.ff.funum.ui.screens.Ranking
+import com.ff.funum.ui.screens.Screens
+import com.ff.funum.ui.screens.Shop
 import com.ff.funum.ui.theme.DarkGreen
 import com.ff.funum.ui.theme.FunumTheme
 import com.ff.funum.ui.theme.White
 
 class MainActivity : ComponentActivity() {
-    private val viewModel = LessonsViewModel()
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val viewModel : LessonsViewModel by viewModels()
         setContent {
             FunumTheme {
                 // A surface container using the 'background' color from the theme
@@ -57,7 +67,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    MyBottomAppBar(navnController = navController, viewModel = viewModel)
+                    MyBottomAppBar(navController = navController, viewModel = viewModel)
                 }
             }
         }
@@ -65,7 +75,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyBottomAppBar(navnController: NavController, viewModel: LessonsViewModel){
+fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel){
     val navController = rememberNavController()
     val context = LocalContext.current.applicationContext
     val selected = remember {
@@ -143,6 +153,16 @@ fun MyBottomAppBar(navnController: NavController, viewModel: LessonsViewModel){
             composable(Screens.Shop.screen){ Shop()}
             composable(Screens.Profile.screen){ Profile(navController = navController)}
             composable(Screens.Config.screen){ Config(navController = navController)}
+            composable(
+                route = "${Screens.Quiz.screen}/{examId}",
+                arguments = listOf(
+                    navArgument("examId"){
+                        type = NavType.StringType
+                    }
+                )
+            ){ backStackEntry ->
+                QuizScreen(navController = navController, examId = backStackEntry.arguments?.getString("examId"))
+            }
 
         }
 

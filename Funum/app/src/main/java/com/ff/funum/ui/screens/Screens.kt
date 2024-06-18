@@ -1,4 +1,4 @@
-package com.ff.funum.screens
+package com.ff.funum.ui.screens
 
 sealed class Screens (val screen: String){
     data object Home: Screens("home")
@@ -6,4 +6,7 @@ sealed class Screens (val screen: String){
     data object Ranking: Screens("ranking")
     data object Shop: Screens("shop")
     data object Config: Screens("config")
+    data object Quiz: Screens("quiz")
+    data object Register: Screens("register")
+    data object Login: Screens("login")
 }

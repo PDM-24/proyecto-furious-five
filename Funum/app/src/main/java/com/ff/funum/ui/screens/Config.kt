@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.ff.funum.R
+import com.ff.funum.ui.screens.Screens
 import com.ff.funum.ui.theme.Chewy
 import com.ff.funum.ui.theme.DarkGreen
 import com.ff.funum.ui.theme.Green

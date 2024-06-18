@@ -50,13 +50,19 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.runtime.livedata)
     val retrofit_version = "2.11.0"
     // Retrofit
     implementation ("com.squareup.retrofit2:retrofit:$retrofit_version")
     implementation ("com.squareup.retrofit2:converter-gson:$retrofit_version")
 
+    // Datastore
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
     // Coil
     implementation(libs.coil.compose)
+
+    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
