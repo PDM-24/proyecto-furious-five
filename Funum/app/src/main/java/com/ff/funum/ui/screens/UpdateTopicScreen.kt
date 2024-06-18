@@ -1,4 +1,4 @@
-package com.ff.funum.screens
+package com.ff.funum.ui.screens
 
 import android.os.Build
 import android.util.Log
@@ -42,25 +42,16 @@ import com.ff.funum.ui.theme.LightGreen
 import com.ff.funum.ui.theme.White
 
 
-//@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-//@Composable
-//fun UpdateTopicScreen(accion : String, topic: TopicAPI=TopicAPI(id = "",imagen = listOf("")), idLesson:String) {
-////    val viewModel:LessonsViewModel= LessonsViewModel()
-//    viewModel.updatedTopic=topic
-//    Column(modifier = Modifier
-//        .fillMaxSize()
-//        .background(LightGreen)) {
-//        UpdateTopicComponent(accion,viewModel,idLesson,topic)
-//    }
-//
-//}
-//
-//@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-//@Preview
-//@Composable
-//fun UpdateTopicScreenPreview() {
-//    UpdateTopicScreen("Agregar", idLesson = "")
-//}
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+@Composable
+fun UpdateTopicScreen(accion : String, topic: TopicAPI=TopicAPI(id = "",imagen = listOf("")), idLesson:String, viewModel: LessonsViewModel) {
+    viewModel.updatedTopic=topic
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(LightGreen)) {
+        UpdateTopicComponent(accion,viewModel,idLesson,topic)
+    }
+}
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
