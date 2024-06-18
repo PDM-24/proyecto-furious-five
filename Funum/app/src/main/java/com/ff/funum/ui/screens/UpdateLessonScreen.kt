@@ -112,20 +112,26 @@ fun UpdateLessonComponent(accion: String,viewModel: LessonsViewModel,idLesson: S
             Modifier
                 .fillMaxWidth()
                 .weight(0.1f),horizontalArrangement = Arrangement.SpaceAround) {
-            ButtonUpdate(function = { viewModel.updatedTopic= TopicAPI() }, texto = "Cancelar")
+            ButtonUpdate(function = { viewModel.updatedLesson= Lessons() }, texto = "Cancelar")
             if(accion==="Agregar"){
                 ButtonUpdateLesson(function = {
-                    viewModel.updatedTopic.id?.let { viewModel.updateTopic(viewModel.updatedTopic, idTopic = it, idLesson = idLesson, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
-                    if(viewModel.updatedTopic.visibility){
-                        viewModel.updatedTopic.id?.let { viewModel.toggleTopicVisibility(idTopic = it, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
+                    viewModel.updatedLesson.id?.let {
+                        viewModel.updateLesson(viewModel.updatedLesson, it,token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50")
                     }
+                    if(viewModel.updatedLesson.visibility){
+                        viewModel.updatedLesson.id?.let { viewModel.toggleLessonVisibility(idLesson = it, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
+                    }
+                    viewModel.updatedLesson= Lessons()
                 }, texto = "Agregar")
             }else if(accion==="Actualizar"){
                 ButtonUpdateLesson(function = {
-                    viewModel.updatedTopic.id?.let { viewModel.updateTopic(viewModel.updatedTopic, idTopic = it, idLesson = idLesson, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
-                    if(viewModel.updatedTopic.visibility!=lesson.visibility){
-                        viewModel.updatedTopic.id?.let { viewModel.toggleTopicVisibility(idTopic = it, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
+                    viewModel.updatedLesson.id?.let {
+                        viewModel.updateLesson(viewModel.updatedLesson, it,token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50")
                     }
+                    if(viewModel.updatedLesson.visibility){
+                        viewModel.updatedLesson.id?.let { viewModel.toggleLessonVisibility(idLesson = it, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
+                    }
+                    viewModel.updatedLesson= Lessons()
                 }, texto = "Actualizar")
             }
 

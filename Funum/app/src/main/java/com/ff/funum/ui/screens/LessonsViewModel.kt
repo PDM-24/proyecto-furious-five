@@ -116,6 +116,44 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
     //Gestiona la informacion de Update lesson screen
     var updatedLesson :Lessons= Lessons()
 
+    //Update lesson
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    fun updateLesson(lesson: Lessons,idLesson:String="",token:String) {
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val response = api.updateLesson(lesson, idLesson, "Bearer $token")
+                Log.i("MainViewModel",response.toString())
+            }catch (e:Exception){
+                when(e){
+                    is retrofit2.HttpException -> {
+                        e.message?.let { Log.i("MainViewmodel", it) }
+                    }
+                    else -> {
+                        Log.i("MainViewModel", e.toString())
+                    }
+                }
+            }
+        }
+    }
+    //Toggle lesson visibility
+    fun toggleLessonVisibility(idLesson:String="",token:String) {
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val response = api.toggleLessonVisibility( idLesson, "Bearer $token")
+                Log.i("MainViewModel",response.toString())
+            }catch (e:Exception){
+                when(e){
+                    is retrofit2.HttpException -> {
+                        e.message?.let { Log.i("MainViewmodel", it) }
+                    }
+                    else -> {
+                        Log.i("MainViewModel", e.toString())
+                    }
+                }
+            }
+        }
+    }
+
     // Funciones para el Quiz
     var auxUiState by mutableStateOf(QuizUiState())
 
