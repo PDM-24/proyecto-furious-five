@@ -41,6 +41,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.ff.funum.R
 import com.ff.funum.data.api.RegisterApi
 import com.ff.funum.ui.theme.Chewy
@@ -50,7 +54,8 @@ import com.ff.funum.ui.theme.White
 
 @Composable
 fun RegisterScreen(
-    viewModel: AuthViewModel
+    viewModel: AuthViewModel,
+    navController: NavController
 ) {
     var registerData by remember { mutableStateOf(RegisterApi()) }
     fun clearFields() {
@@ -65,7 +70,7 @@ fun RegisterScreen(
                 Toast.makeText(context, "Usuario registrado con éxito", Toast.LENGTH_LONG).show()
                 clearFields()
             } else {
-                Toast.makeText(context, "Registro fallido", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Registro fallido, revise sus credenciales", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -178,7 +183,7 @@ fun RegisterScreen(
                 Text(text = "¿Ya tienes una cuenta?", color = White)
                 Spacer(modifier = Modifier.size(5.dp))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("login") },
                     colors = ButtonDefaults.buttonColors(containerColor = GreenShop)
                 ) {
                     Text(text = "INICIA SESION AQUI")

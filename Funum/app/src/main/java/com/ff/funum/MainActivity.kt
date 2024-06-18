@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -49,10 +50,10 @@ import com.ff.funum.ui.theme.FunumTheme
 import com.ff.funum.ui.theme.White
 
 class MainActivity : ComponentActivity() {
-    private val viewModel = LessonsViewModel()
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val viewModel : LessonsViewModel by viewModels()
         setContent {
             FunumTheme {
                 // A surface container using the 'background' color from the theme
