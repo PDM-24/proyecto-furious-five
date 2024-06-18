@@ -14,7 +14,6 @@ import com.ff.funum.data.api.ApiClient
 import com.ff.funum.data.api.RegisterApi
 import com.ff.funum.data.local.datastore.DataStore
 import com.ff.funum.model.LoginData
-import com.ff.funum.ui.screens.Quiz.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
