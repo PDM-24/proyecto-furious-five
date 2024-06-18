@@ -27,6 +27,16 @@ interface APIService {
     @PATCH(value = Constants.API_PATH+Constants.Topic_Path+Constants.Toggle_Topic_Visibility_Path+"{id}")
     suspend fun toggleTopicVisibility(@Path("id", encoded = false) idTopic:String,@Header("authorization") token:String):TopicAPI
 
+    //Update Lesson
+    @Headers(value = ["Content-Type: application/json"])
+    @POST(value = Constants.API_PATH+Constants.LESSON_PATH+Constants.Update_Lesson_Path+"{id}")
+    suspend fun updateLesson(@Body lesson: Lessons, @Path("id", encoded = false) idLesson:String, @Header("authorization") token:String):Lessons
+
+    //Toggle lesson visibility
+    @Headers(value = ["Content-Type: application/json"])
+    @PATCH(value = Constants.API_PATH+Constants.LESSON_PATH+Constants.Toggle_Lesson_Visibility_Path+"{id}")
+    suspend fun toggleLessonVisibility(@Path("id", encoded = false) idLesson:String,@Header("authorization") token:String):Lessons
+
     @Headers(
         value = ["Content-Type: application/json"]
     )
