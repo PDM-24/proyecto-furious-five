@@ -98,7 +98,7 @@ object Constants {
     const val USER_EMAIL = "correo"
     const val USER_PWD = "password"
 
-
-    // Modificar el TOKEN ya que aun no esta el LOGIN
-    const val TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZmOGY4ZDFlNGY1MjcxYTA4MjAzZDIiLCJleHAiOjE3MTk3NzcxNzQsImlhdCI6MTcxODQ4MTE3NH0.vns8-EG1Zv2BdWF6nDFDCI6qKmyPllqIsmc3JB-qO_w"
+    const val LOGIN_IDENTIFIER = "identifier"
+    const val LOGIN_PWD = "password"
+    const val LOGIN_TOKEN = "token"
 }
