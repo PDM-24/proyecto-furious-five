@@ -10,11 +10,23 @@ class Repository(private val context: Context) {
     private val api = ApiClient.apiService
     private val dataStore = DataStore(context)
 
-    fun getToken(): Flow<String?> {
+    suspend fun getToken(): String? {
         return dataStore.getToken(context)
     }
 
     suspend fun getAllLessons(token: String): LessonAPI {
         return api.viewAllLessons("Bearer $token")
+    }
+
+    suspend fun getDate(examId: String): String?{
+        return dataStore.getDate(examId)
+    }
+
+    suspend fun saveData(id: String, date: String){
+        return dataStore.saveData(id, date)
+    }
+
+    suspend fun deleteNamePreferences(id: String){
+        return dataStore.deleteNamePreferences(id)
     }
 }

@@ -161,7 +161,7 @@ fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel){
                     }
                 )
             ){ backStackEntry ->
-                QuizScreen(navController = navController, examId = backStackEntry.arguments?.getString("examId"))
+                QuizScreen(navController = navController, examId = backStackEntry.arguments?.getString("examId"), quizViewModel = viewModel)
             }
 
         }

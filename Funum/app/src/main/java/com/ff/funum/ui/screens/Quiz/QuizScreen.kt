@@ -40,10 +40,12 @@ import com.ff.funum.model.Respuesta_match
 import com.ff.funum.ui.components.LoadingProgressDialog
 import com.ff.funum.ui.components.MatchQuestion
 import com.ff.funum.ui.components.MultipleChoiceQuestion
+import com.ff.funum.ui.screens.LessonsViewModel
+import com.ff.funum.ui.screens.UiState
 
 @Composable
 fun QuizScreen(
-    quizViewModel: QuizViewModel = viewModel(),
+    quizViewModel: LessonsViewModel,
     innerPadding: Dp = 0.dp,
     navController: NavController,
     token: String? = "",

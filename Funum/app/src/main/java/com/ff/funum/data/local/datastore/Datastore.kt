@@ -39,10 +39,9 @@ class DataStore (private val context: Context){
         }
     }
 
-    fun getToken(context: Context): Flow<String?> {
-        return context.dataStore.data.map { preferences ->
-            preferences[TOKEN_KEY]
-        }
+    suspend fun getToken(context: Context): String? {
+        val preferences = context.dataStore.data.first()
+        return preferences[TOKEN_KEY]
     }
 
     suspend fun clearToken(context: Context) {
