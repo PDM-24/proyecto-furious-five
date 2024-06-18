@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.ff.funum.R
 import com.ff.funum.ui.theme.Chewy
 import com.ff.funum.ui.theme.DarkGreen
@@ -49,58 +50,57 @@ import com.ff.funum.ui.theme.GreenShop
 import com.ff.funum.ui.theme.GreenTopics
 import com.ff.funum.ui.theme.LightGray
 import com.ff.funum.ui.theme.ProgressBar
+import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun Profile(){
+fun Profile(navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Green)
     ) {
-        AvatarSection()
+
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.35f)
+                .background(GreenTopics)
+                .padding(16.dp)
+        ) {
+            Box(
+                contentAlignment = Alignment.TopEnd,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.avatar3),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(220.dp)
+                        .clip(CircleShape)
+                        .align(Alignment.Center)
+                )
+                IconButton(
+                    onClick = {
+                        navController.navigate(Screens.Config.screen)
+                    },
+                    modifier = Modifier
+                        .size(45.dp)
+                        .align(Alignment.TopEnd)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.config),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                }
+            }
+        }
+
         StatisticsSection()
         UnlockedAvatarsSection()
     }
 }
-
-@Composable
-fun AvatarSection() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.35f)
-            .background(GreenTopics)
-            .padding(16.dp)
-    ) {
-        Box(
-            contentAlignment = Alignment.TopEnd,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.avatar3),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(220.dp)
-                    .clip(CircleShape)
-                    .align(Alignment.Center)
-            )
-            IconButton(
-                onClick = { /* Acción del botón */ },
-                modifier = Modifier
-                    .size(45.dp)
-                    .align(Alignment.TopEnd)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.config),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
-            }
-        }
-    }
-}
-
 
 
 

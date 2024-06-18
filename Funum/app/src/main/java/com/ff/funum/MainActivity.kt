@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -39,6 +40,7 @@ import com.ff.funum.screens.Profile
 import com.ff.funum.screens.Ranking
 import com.ff.funum.screens.Screens
 import com.ff.funum.screens.Shop
+import com.ff.funum.screens.Config
 import com.ff.funum.ui.theme.DarkGreen
 import com.ff.funum.ui.theme.FunumTheme
 import com.ff.funum.ui.theme.White
@@ -54,7 +56,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MyBottomAppBar(viewModel = viewModel)
+                    val navController = rememberNavController()
+                    MyBottomAppBar(navnController = navController, viewModel = viewModel)
                 }
             }
         }
@@ -62,8 +65,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyBottomAppBar(viewModel: LessonsViewModel){
-    val navigationController = rememberNavController()
+fun MyBottomAppBar(navnController: NavController, viewModel: LessonsViewModel){
+    val navController = rememberNavController()
     val context = LocalContext.current.applicationContext
     val selected = remember {
         mutableStateOf(R.drawable.menu)
@@ -76,7 +79,7 @@ fun MyBottomAppBar(viewModel: LessonsViewModel){
             ) {
                 IconButton(onClick = {
                         selected.value = R.drawable.menu
-                    navigationController.navigate(Screens.Home.screen){
+                    navController.navigate(Screens.Home.screen){
                         popUpTo(0)
                     }
                 },
@@ -93,7 +96,7 @@ fun MyBottomAppBar(viewModel: LessonsViewModel){
                 }
                 IconButton(onClick = {
                     selected.value = R.drawable.ranking
-                    navigationController.navigate(Screens.Ranking.screen){
+                    navController.navigate(Screens.Ranking.screen){
                         popUpTo(0)
                     }
                 },
@@ -106,7 +109,7 @@ fun MyBottomAppBar(viewModel: LessonsViewModel){
                 }
                 IconButton(onClick = {
                     selected.value = R.drawable.picoins
-                    navigationController.navigate(Screens.Shop.screen){
+                    navController.navigate(Screens.Shop.screen){
                         popUpTo(0)
                     }
                 },
@@ -118,7 +121,7 @@ fun MyBottomAppBar(viewModel: LessonsViewModel){
                 }
                 IconButton(onClick = {
                     selected.value = R.drawable.profile
-                    navigationController.navigate(Screens.Profile.screen){
+                    navController.navigate(Screens.Profile.screen){
                         popUpTo(0)
                     }
                 },
@@ -132,23 +135,16 @@ fun MyBottomAppBar(viewModel: LessonsViewModel){
             }
         }
     ) {paddingValues ->
-        NavHost(navController = navigationController,
+        NavHost(navController = navController,
             startDestination = Screens.Home.screen,
             modifier = Modifier.padding(paddingValues)){
             composable(Screens.Home.screen){ Home(viewModel)}
             composable(Screens.Ranking.screen){ Ranking()}
             composable(Screens.Shop.screen){ Shop()}
-            composable(Screens.Profile.screen){ Profile()}
+            composable(Screens.Profile.screen){ Profile(navController = navController)}
+            composable(Screens.Config.screen){ Config(navController = navController)}
 
         }
 
     }
 }
-
-/*@Preview
-@Composable
-fun MyBottomBarPreview(){
-    BottomAppBar {
-        MyBottomAppBar()
-    }
-}*/
