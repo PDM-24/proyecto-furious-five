@@ -1,5 +1,6 @@
 package com.ff.funum.ui.screens
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.ff.funum.data.api.ApiClient
 import com.ff.funum.data.api.EndExamBody
+import com.ff.funum.data.api.Lessons
 import com.ff.funum.data.api.Pregunta_match_api
 import com.ff.funum.data.api.Pregunta_opcion_multiple_Api
 import com.ff.funum.data.api.Respuesta_match_api
@@ -40,6 +42,7 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
     private val api = ApiClient.apiService
     private val repository = Repository(application)
 
+    @SuppressLint("SuspiciousIndentation")
     fun getAllLessons() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -109,6 +112,9 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
             }
         }
     }
+
+    //Gestiona la informacion de Update lesson screen
+    var updatedLesson :Lessons= Lessons()
 
     // Funciones para el Quiz
     var auxUiState by mutableStateOf(QuizUiState())

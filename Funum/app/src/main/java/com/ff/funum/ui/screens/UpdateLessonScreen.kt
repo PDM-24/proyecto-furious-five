@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -32,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ff.funum.data.api.Lessons
 import com.ff.funum.data.api.TopicAPI
 import com.ff.funum.ui.screens.LessonsViewModel
 import com.ff.funum.ui.theme.Black
@@ -44,47 +49,41 @@ import com.ff.funum.ui.theme.White
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
-fun UpdateTopicScreen(accion : String, topic: TopicAPI=TopicAPI(id = "",imagen = listOf("")), idLesson:String, viewModel: LessonsViewModel) {
-    viewModel.updatedTopic=topic
+fun UpdateLessonScreen(accion : String, lesson: Lessons=Lessons(id = ""), idLesson:String, viewModel: LessonsViewModel) {
+    viewModel.updatedLesson=lesson
     Column(modifier = Modifier
         .fillMaxSize()
         .background(LightGreen)) {
-        UpdateTopicComponent(accion,viewModel,idLesson,topic)
+        UpdateLessonComponent(accion,viewModel,idLesson,lesson)
     }
 }
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
-fun UpdateTopicComponent(accion: String,viewModel: LessonsViewModel,idLesson: String,topic: TopicAPI){
+fun UpdateLessonComponent(accion: String,viewModel: LessonsViewModel,idLesson: String,lesson: Lessons){
 
     Column (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween ){
         if(accion==="Agregar"){
-            TitleTopic(action = "Agregar tema",
+            TitleLesson(action = "Agregar leccion",
                 Modifier
                     .fillMaxWidth()
                     .background(DarkGreen)
                     .weight(0.1f))
         }else if(accion==="Actualizar"){
-            TitleTopic(action = "Actualizar tema",
+            TitleLesson(action = "Actualizar leccion",
                 Modifier
                     .fillMaxWidth()
                     .background(DarkGreen)
                     .weight(0.1f))
         }
 
-        Topic(
+        Lesson(
             Modifier
                 .weight(0.2f)
                 .fillMaxSize(),
             viewModel
         )
-        Content(
-            Modifier
-                .weight(0.5f)
-                .fillMaxSize()
-            ,viewModel
-        )
-        TopicImage(
+        LessonImage(
             Modifier
                 .weight(0.2f)
                 .fillMaxWidth()
@@ -95,14 +94,13 @@ fun UpdateTopicComponent(accion: String,viewModel: LessonsViewModel,idLesson: St
                 .weight(0.2f)
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)) {
-            TopicPonderation(
+            LessonArea(
                 Modifier
                     .weight(0.5f)
-                    .padding(horizontal = 10.dp)
-                    .fillMaxSize(),
-                viewModel
+                    .fillMaxSize()
+                ,viewModel
             )
-            TopicVisibility(
+            LessonVisibility(
                 Modifier
                     .weight(0.5f)
                     .padding(horizontal = 10.dp)
@@ -116,20 +114,18 @@ fun UpdateTopicComponent(accion: String,viewModel: LessonsViewModel,idLesson: St
                 .weight(0.1f),horizontalArrangement = Arrangement.SpaceAround) {
             ButtonUpdate(function = { viewModel.updatedTopic= TopicAPI() }, texto = "Cancelar")
             if(accion==="Agregar"){
-                ButtonUpdate(function = {
+                ButtonUpdateLesson(function = {
                     viewModel.updatedTopic.id?.let { viewModel.updateTopic(viewModel.updatedTopic, idTopic = it, idLesson = idLesson, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
                     if(viewModel.updatedTopic.visibility){
                         viewModel.updatedTopic.id?.let { viewModel.toggleTopicVisibility(idTopic = it, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
                     }
-                    viewModel.updatedTopic= TopicAPI()
                 }, texto = "Agregar")
             }else if(accion==="Actualizar"){
-                ButtonUpdate(function = {
+                ButtonUpdateLesson(function = {
                     viewModel.updatedTopic.id?.let { viewModel.updateTopic(viewModel.updatedTopic, idTopic = it, idLesson = idLesson, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
-                    if(viewModel.updatedTopic.visibility!=topic.visibility){
+                    if(viewModel.updatedTopic.visibility!=lesson.visibility){
                         viewModel.updatedTopic.id?.let { viewModel.toggleTopicVisibility(idTopic = it, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
                     }
-                    viewModel.updatedTopic=TopicAPI()
                 }, texto = "Actualizar")
             }
 
@@ -139,47 +135,80 @@ fun UpdateTopicComponent(accion: String,viewModel: LessonsViewModel,idLesson: St
     }
 }
 @Composable
-fun Topic(modifier: Modifier,viewModel: LessonsViewModel) {
-    var topic by remember {
-        mutableStateOf(viewModel.updatedTopic.nombre)
+fun Lesson(modifier: Modifier,viewModel: LessonsViewModel) {
+    var lesson by remember {
+        mutableStateOf(viewModel.updatedLesson.nombre)
     }
     Column (
         modifier, verticalArrangement = Arrangement.Center){
-        Text(text = "Tema",fontWeight = FontWeight.ExtraBold, modifier = Modifier
+        Text(text = "Leccion",fontWeight = FontWeight.ExtraBold, modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 30.dp, vertical = 5.dp), color = DarkGreen, fontSize = 25.sp )
-        TextField(value = topic, colors = TextFieldDefaults.colors(unfocusedContainerColor = White, focusedContainerColor = White, focusedTextColor = Black, unfocusedTextColor = Black, cursorColor = Black, focusedIndicatorColor = DarkGreen),
+        TextField(value = lesson, colors = TextFieldDefaults.colors(unfocusedContainerColor = White, focusedContainerColor = White, focusedTextColor = Black, unfocusedTextColor = Black, cursorColor = Black, focusedIndicatorColor = DarkGreen),
             onValueChange = {
-                topic=it
-                viewModel.updatedTopic=viewModel.updatedTopic.copy(nombre = it)
+                lesson=it
+                viewModel.updatedLesson=viewModel.updatedLesson.copy(nombre = it)
             }, modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp, vertical = 5.dp),singleLine = true)
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Content(modifier: Modifier,viewModel: LessonsViewModel){
-    var content by remember {
-        mutableStateOf(viewModel.updatedTopic.contenido)
-    }
-    Column (
-        modifier, verticalArrangement = Arrangement.Center){
-        Text(text = "Contenido",fontWeight = FontWeight.ExtraBold, modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 30.dp, vertical = 5.dp), color = DarkGreen, fontSize = 25.sp)
-        TextField(value = content, colors = TextFieldDefaults.colors(unfocusedContainerColor = White, focusedContainerColor = White, focusedTextColor = Black, unfocusedTextColor = Black, cursorColor = Black, focusedIndicatorColor = DarkGreen),
-            onValueChange = {
-                content=it
-                viewModel.updatedTopic=viewModel.updatedTopic.copy(contenido = it)
-            },modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 30.dp, vertical = 5.dp), maxLines = 20)
+fun LessonArea(modifier: Modifier,viewModel: LessonsViewModel){
+    val areas = listOf(
+        "",
+        "Algebra",
+        "Geometria",
+        "Aritmetica"
+    )
+    var isExpanded by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf(areas[0]) }
+
+
+
+    ExposedDropdownMenuBox(
+        expanded = isExpanded,
+        onExpandedChange = { newValue ->
+            isExpanded = newValue
+        }
+    ) {
+        TextField(
+            value = selectedOption,
+            onValueChange = {},
+            readOnly = true,
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
+            },
+            placeholder = {
+                Text(text = "Selecciona un area")
+            },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            modifier = Modifier.menuAnchor()
+        )
+        ExposedDropdownMenu(expanded = isExpanded,
+            onDismissRequest = {
+                isExpanded = false
+            }) {
+
+            areas.forEach { option ->
+                DropdownMenuItem(
+                    text = { Text(text = option) },
+                    onClick = {
+                        selectedOption = option
+                        isExpanded = false
+                        viewModel.updatedLesson=viewModel.updatedLesson.copy(area_estudio = option)
+                    })
+            }
+
+
+        }
     }
 }
 @Composable
-fun TopicImage(modifier: Modifier,viewModel: LessonsViewModel){
-    var topicImage by remember {
-        mutableStateOf(viewModel.updatedTopic.imagen[0])
+fun LessonImage(modifier: Modifier,viewModel: LessonsViewModel){
+    var lessonImage by remember {
+        mutableStateOf(viewModel.updatedLesson.imagen)
     }
     Column (
         modifier, verticalArrangement = Arrangement.Center
@@ -187,9 +216,9 @@ fun TopicImage(modifier: Modifier,viewModel: LessonsViewModel){
         Text(text = "Url de la imagen",fontWeight = FontWeight.ExtraBold, modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 30.dp, vertical = 5.dp), color = DarkGreen, fontSize = 25.sp)
-        TextField(value = topicImage, colors = TextFieldDefaults.colors(unfocusedContainerColor = White, focusedContainerColor = White, focusedTextColor = Black, unfocusedTextColor = Black, cursorColor = Black, focusedIndicatorColor = DarkGreen),
-            onValueChange = {topicImage=it
-                viewModel.updatedTopic=viewModel.updatedTopic.copy(imagen = arrayListOf(it))
+        TextField(value = lessonImage, colors = TextFieldDefaults.colors(unfocusedContainerColor = White, focusedContainerColor = White, focusedTextColor = Black, unfocusedTextColor = Black, cursorColor = Black, focusedIndicatorColor = DarkGreen),
+            onValueChange = {lessonImage=it
+                viewModel.updatedLesson=viewModel.updatedLesson.copy(imagen = it)
             },keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Uri),modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp, vertical = 5.dp),singleLine = true)
@@ -197,59 +226,30 @@ fun TopicImage(modifier: Modifier,viewModel: LessonsViewModel){
 }
 
 @Composable
-fun TopicVisibility(modifier: Modifier,viewModel: LessonsViewModel){
+fun LessonVisibility(modifier: Modifier,viewModel: LessonsViewModel){
     var visible by remember {
-        mutableStateOf(viewModel.updatedTopic.visibility)
+        mutableStateOf(viewModel.updatedLesson.visibility)
     }
     Row (
         modifier, verticalAlignment = Alignment.CenterVertically){
         Text(text = "Visibilidad",fontWeight = FontWeight.ExtraBold,modifier = Modifier
             .padding(horizontal = 15.dp, vertical = 5.dp), color = DarkGreen, fontSize = 15.sp)
         Switch(checked = visible , onCheckedChange ={visible=it
-            viewModel.updatedTopic=viewModel.updatedTopic.copy(visibility = visible)
+            viewModel.updatedLesson=viewModel.updatedLesson.copy(visibility = visible)
         }, colors = SwitchDefaults.colors(checkedTrackColor = DarkGreen, uncheckedTrackColor = GreenTopics, uncheckedBorderColor = Green, uncheckedThumbColor = Green, checkedBorderColor = Green, checkedThumbColor = Green) )
     }
 
 }
 
-@Composable
-fun TopicPonderation(modifier: Modifier,viewModel: LessonsViewModel){
-    var ponderation by remember {
-        mutableStateOf(viewModel.updatedTopic.ponderacion.toString())
-    }
-    Row (
-        modifier, verticalAlignment = Alignment.CenterVertically){
-        Text(text = "Ponderacion", fontWeight = FontWeight.ExtraBold,modifier = Modifier
-            .padding(horizontal = 7.8.dp, vertical = 5.dp), color = DarkGreen, fontSize = 15.sp)
-        TextField(value = ponderation, colors = TextFieldDefaults.colors(unfocusedContainerColor = White, focusedContainerColor = White, focusedTextColor = Black, unfocusedTextColor = Black, cursorColor = Black, focusedIndicatorColor = DarkGreen),
-            onValueChange = {
-                if(it!=""){
-                    if(it.toInt()<=100) {
-                        ponderation = it
-                        viewModel.updatedTopic =
-                            viewModel.updatedTopic.copy(ponderacion = ponderation.toInt())
-                    }else{
-                        ponderation = "100"
-                        viewModel.updatedTopic =
-                            viewModel.updatedTopic.copy(ponderacion = ponderation.toInt())
-                    }
-                }else{
-                    ponderation=it
-                    viewModel.updatedTopic=viewModel.updatedTopic.copy(ponderacion = 0)
-
-                }
-            }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number), maxLines = 1 )
-    }
-}
 
 @Composable
-fun ButtonUpdate(function : ()->Unit,texto :String) {
+fun ButtonUpdateLesson(function : ()->Unit,texto :String) {
     Button(onClick = { function() }, colors = ButtonDefaults.buttonColors(containerColor = DarkGreen)) {
         Text(text = texto, color = White )
     }
 }
 @Composable
-fun TitleTopic(action:String, modifier: Modifier,) {
+fun TitleLesson(action:String, modifier: Modifier,) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Text(text = action,fontWeight = FontWeight.ExtraBold, color = White, textAlign = TextAlign.Center, fontSize = 30.sp)
     }
