@@ -49,18 +49,18 @@ import com.ff.funum.ui.theme.White
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
-fun UpdateLessonScreen(accion : String, lesson: Lessons=Lessons(id = ""), idLesson:String, viewModel: LessonsViewModel) {
+fun UpdateLessonScreen(accion : String, lesson: Lessons=Lessons(id = ""), viewModel: LessonsViewModel) {
     viewModel.updatedLesson=lesson
     Column(modifier = Modifier
         .fillMaxSize()
         .background(LightGreen)) {
-        UpdateLessonComponent(accion,viewModel,idLesson,lesson)
+        UpdateLessonComponent(accion,viewModel,lesson)
     }
 }
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
-fun UpdateLessonComponent(accion: String,viewModel: LessonsViewModel,idLesson: String,lesson: Lessons){
+fun UpdateLessonComponent(accion: String,viewModel: LessonsViewModel,lesson: Lessons){
 
     Column (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween ){
         if(accion==="Agregar"){
@@ -89,7 +89,7 @@ fun UpdateLessonComponent(accion: String,viewModel: LessonsViewModel,idLesson: S
                 .fillMaxWidth()
             ,viewModel
         )
-        Row(
+        Column(
             Modifier
                 .weight(0.2f)
                 .fillMaxSize()
@@ -116,20 +116,14 @@ fun UpdateLessonComponent(accion: String,viewModel: LessonsViewModel,idLesson: S
             if(accion==="Agregar"){
                 ButtonUpdateLesson(function = {
                     viewModel.updatedLesson.id?.let {
-                        viewModel.updateLesson(viewModel.updatedLesson, it,token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50")
-                    }
-                    if(viewModel.updatedLesson.visibility){
-                        viewModel.updatedLesson.id?.let { viewModel.toggleLessonVisibility(idLesson = it, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
+                        viewModel.updateLesson(viewModel.updatedLesson, it, visible = lesson.visibility, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MjAwNTk0OTcsImlhdCI6MTcxODc2MzQ5N30.naDizD10OnRke-z39Qjp-L0eXEHsiOhGpQ2FQpJx0ns")
                     }
                     viewModel.updatedLesson= Lessons()
                 }, texto = "Agregar")
             }else if(accion==="Actualizar"){
                 ButtonUpdateLesson(function = {
                     viewModel.updatedLesson.id?.let {
-                        viewModel.updateLesson(viewModel.updatedLesson, it,token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50")
-                    }
-                    if(viewModel.updatedLesson.visibility){
-                        viewModel.updatedLesson.id?.let { viewModel.toggleLessonVisibility(idLesson = it, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
+                        viewModel.updateLesson(viewModel.updatedLesson, it,visible = lesson.visibility,token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MjAwNTk0OTcsImlhdCI6MTcxODc2MzQ5N30.naDizD10OnRke-z39Qjp-L0eXEHsiOhGpQ2FQpJx0ns")
                     }
                     viewModel.updatedLesson= Lessons()
                 }, texto = "Actualizar")
@@ -168,48 +162,56 @@ fun LessonArea(modifier: Modifier,viewModel: LessonsViewModel){
         "Geometria",
         "Aritmetica"
     )
+    val index = areas.indexOf(viewModel.updatedLesson.area_estudio)
     var isExpanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(areas[0]) }
+    var selectedOption by remember { mutableStateOf(areas[index]) }
 
-
-
-    ExposedDropdownMenuBox(
-        expanded = isExpanded,
-        onExpandedChange = { newValue ->
-            isExpanded = newValue
-        }
-    ) {
-        TextField(
-            value = selectedOption,
-            onValueChange = {},
-            readOnly = true,
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
-            },
-            placeholder = {
-                Text(text = "Selecciona un area")
-            },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
-            modifier = Modifier.menuAnchor()
-        )
-        ExposedDropdownMenu(expanded = isExpanded,
-            onDismissRequest = {
-                isExpanded = false
-            }) {
-
-            areas.forEach { option ->
-                DropdownMenuItem(
-                    text = { Text(text = option) },
-                    onClick = {
-                        selectedOption = option
-                        isExpanded = false
-                        viewModel.updatedLesson=viewModel.updatedLesson.copy(area_estudio = option)
-                    })
+    Column {
+        Text(text = "Area de estudio",fontWeight = FontWeight.ExtraBold, modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 30.dp, vertical = 5.dp), color = DarkGreen, fontSize = 25.sp )
+        ExposedDropdownMenuBox(
+            expanded = isExpanded,
+            modifier = Modifier.fillMaxWidth(),
+            onExpandedChange = { newValue ->
+                isExpanded = newValue
             }
+        ) {
+            TextField(
+                value = selectedOption,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
+                },
+                placeholder = {
+                    Text(text = "Selecciona un area")
+                },
+                colors = ExposedDropdownMenuDefaults.textFieldColors(unfocusedContainerColor = White, focusedContainerColor = White, focusedTextColor = Black, unfocusedTextColor = Black, cursorColor = Black, focusedIndicatorColor = DarkGreen),
+                modifier = Modifier.menuAnchor().fillMaxWidth()
+                    .padding(horizontal = 30.dp, vertical = 5.dp)
+            )
+            ExposedDropdownMenu(expanded = isExpanded,
+                onDismissRequest = {
+                    isExpanded = false
+                }) {
+
+                areas.forEach { option ->
+                    DropdownMenuItem(
+                        text = { Text(text = option) },
+                        onClick = {
+                            selectedOption = option
+                            isExpanded = false
+                            viewModel.updatedLesson=viewModel.updatedLesson.copy(area_estudio = option)
+                        })
+                }
 
 
+            }
         }
     }
+
+
 }
 @Composable
 fun LessonImage(modifier: Modifier,viewModel: LessonsViewModel){

@@ -74,13 +74,18 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
 
     //Update topic
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    fun updateTopic(topic: TopicAPI, idLesson:String, idTopic:String="",token:String) {
+    fun updateTopic(topic: TopicAPI, idLesson:String, idTopic:String="",token:String,visible: Boolean) {
         viewModelScope.launch(Dispatchers.IO){
             try {
                 val response = topic.id?.let {
                     UpdateTopic(topic.nombre,topic.contenido,topic.ponderacion,topic.visibility,topic.imagen,
                         it,idLesson)
                 }?.let { api.updateTopic(it, idTopic, "Bearer $token") }
+                if (response != null) {
+                    if(visible!=response.visibility){
+                        val visibility = response.id?.let { api.toggleTopicVisibility(it,"Bearer $token") }
+                    }
+                }
                 Log.i("MainViewModel",response.toString())
             }catch (e:Exception){
                 when(e){
@@ -118,10 +123,14 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
 
     //Update lesson
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    fun updateLesson(lesson: Lessons,idLesson:String="",token:String) {
+    fun updateLesson(lesson: Lessons,idLesson:String="",token:String,visible:Boolean) {
         viewModelScope.launch(Dispatchers.IO){
             try {
                 val response = api.updateLesson(lesson, idLesson, "Bearer $token")
+                if(visible!=response.visibility){
+                    val visibility = response.id?.let { api.toggleLessonVisibility(it,"Bearer $token") }
+                }
+
                 Log.i("MainViewModel",response.toString())
             }catch (e:Exception){
                 when(e){
