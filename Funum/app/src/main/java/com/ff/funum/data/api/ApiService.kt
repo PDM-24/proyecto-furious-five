@@ -28,6 +28,12 @@ interface APIService {
     @PATCH(value = Constants.API_PATH+Constants.Topic_Path+Constants.Toggle_Topic_Visibility_Path+"{id}")
     suspend fun toggleTopicVisibility(@Path("id", encoded = false) idTopic:String,@Header("authorization") token:String):TopicAPI
 
+    //Delete topic
+    @Headers(value = ["Content-Type: application/json"])
+    @PATCH(value = Constants.API_PATH+Constants.Topic_Path+Constants.Delete_Topic_Path+"{id}")
+    suspend fun deleteTopic(@Body idLesson: DeleteTopic,@Path("id", encoded = false) idTopic:String,@Header("authorization") token:String):ApiResponseSuccessful
+
+
     //Update Lesson
     @Headers(value = ["Content-Type: application/json"])
     @POST(value = Constants.API_PATH+Constants.LESSON_PATH+Constants.Update_Lesson_Path+"{id}")
@@ -37,6 +43,11 @@ interface APIService {
     @Headers(value = ["Content-Type: application/json"])
     @PATCH(value = Constants.API_PATH+Constants.LESSON_PATH+Constants.Toggle_Lesson_Visibility_Path+"{id}")
     suspend fun toggleLessonVisibility(@Path("id", encoded = false) idLesson:String,@Header("authorization") token:String):Lessons
+
+    //Delete lesson
+    @Headers(value = ["Content-Type: application/json"])
+    @PATCH(value = Constants.API_PATH+Constants.LESSON_PATH+Constants.Delete_Lesson_Path+"{id}")
+    suspend fun deleteLesson(@Path("id", encoded = false) idLesson:String,@Header("authorization") token:String):ApiResponseSuccessful
 
     @Headers(
         value = ["Content-Type: application/json"]

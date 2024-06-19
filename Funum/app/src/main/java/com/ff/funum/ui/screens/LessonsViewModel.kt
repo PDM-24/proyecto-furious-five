@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.ff.funum.data.api.ApiClient
+import com.ff.funum.data.api.DeleteTopic
 import com.ff.funum.data.api.EndExamBody
 import com.ff.funum.data.api.Lessons
 import com.ff.funum.data.api.Pregunta_match_api
@@ -117,6 +118,24 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
             }
         }
     }
+    //Delete topic
+    fun deleteTopic(idTopic:String="",token:String, idLesson: String) {
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val response = api.deleteTopic( DeleteTopic(idLesson),idTopic, "Bearer $token")
+                Log.i("MainViewModel",response.toString())
+            }catch (e:Exception){
+                when(e){
+                    is retrofit2.HttpException -> {
+                        e.message?.let { Log.i("MainViewmodel", it) }
+                    }
+                    else -> {
+                        Log.i("MainViewModel", e.toString())
+                    }
+                }
+            }
+        }
+    }
 
     //Gestiona la informacion de Update lesson screen
     var updatedLesson :Lessons= Lessons()
@@ -149,6 +168,25 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
         viewModelScope.launch(Dispatchers.IO){
             try {
                 val response = api.toggleLessonVisibility( idLesson, "Bearer $token")
+                Log.i("MainViewModel",response.toString())
+            }catch (e:Exception){
+                when(e){
+                    is retrofit2.HttpException -> {
+                        e.message?.let { Log.i("MainViewmodel", it) }
+                    }
+                    else -> {
+                        Log.i("MainViewModel", e.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    //Delete lesson
+    fun deleteLesson(idLesson:String="",token:String) {
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val response = api.deleteLesson( idLesson, "Bearer $token")
                 Log.i("MainViewModel",response.toString())
             }catch (e:Exception){
                 when(e){
