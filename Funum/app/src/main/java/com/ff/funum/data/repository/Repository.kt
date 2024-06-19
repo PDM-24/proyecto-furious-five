@@ -1,9 +1,12 @@
 package com.ff.funum.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.ff.funum.data.api.ApiClient
+import com.ff.funum.data.api.ApiClient.apiService
 import com.ff.funum.data.api.LessonAPI
 import com.ff.funum.data.local.datastore.DataStore
+import com.ff.funum.model.User
 import kotlinx.coroutines.flow.Flow
 
 class Repository(private val context: Context) {
@@ -29,4 +32,13 @@ class Repository(private val context: Context) {
     suspend fun deleteNamePreferences(id: String){
         return dataStore.deleteNamePreferences(id)
     }
+
+    suspend fun getUser(): User {
+        val token = getToken() ?: throw IllegalStateException("Token no disponible")
+        Log.d("Repository", "Obteniendo usuario con token: $token")
+        val user = api.getUser("Bearer $token")
+        Log.d("Repository", "Respuesta de la API de usuario: $user")
+        return user
+    }
+
 }

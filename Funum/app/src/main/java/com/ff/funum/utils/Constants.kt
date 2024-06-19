@@ -3,8 +3,13 @@ package com.ff.funum.utils
 object Constants {
     // API service
     // Modificar la BASE_URL para cada uno al probar con la API
-    const val BASE_URL = "http://192.168.1.14:3500"
+
+
+    const val BASE_URL = "http://192.168.0.29:3500"
+
+
     const val API_PATH = "/api"
+    const val WHOAMI_PATH = "/whoami"
 
     const val LESSON_PATH = "/lesson"
 
@@ -101,4 +106,7 @@ object Constants {
     const val LOGIN_IDENTIFIER = "identifier"
     const val LOGIN_PWD = "password"
     const val LOGIN_TOKEN = "token"
+
+//    Profile
+    const val USER_PATH = "user"
 }

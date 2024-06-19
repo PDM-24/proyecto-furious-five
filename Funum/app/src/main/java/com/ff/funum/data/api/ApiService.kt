@@ -2,6 +2,7 @@ package com.ff.funum.data.api
 
 import coil.memory.MemoryCache
 import com.ff.funum.model.LoginData
+import com.ff.funum.model.User
 import com.ff.funum.utils.Constants
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -26,6 +27,16 @@ interface APIService {
     @Headers(value = ["Content-Type: application/json"])
     @PATCH(value = Constants.API_PATH+Constants.Topic_Path+Constants.Toggle_Topic_Visibility_Path+"{id}")
     suspend fun toggleTopicVisibility(@Path("id", encoded = false) idTopic:String,@Header("authorization") token:String):TopicAPI
+
+    //Update Lesson
+    @Headers(value = ["Content-Type: application/json"])
+    @POST(value = Constants.API_PATH+Constants.LESSON_PATH+Constants.Update_Lesson_Path+"{id}")
+    suspend fun updateLesson(@Body lesson: Lessons, @Path("id", encoded = false) idLesson:String, @Header("authorization") token:String):Lessons
+
+    //Toggle lesson visibility
+    @Headers(value = ["Content-Type: application/json"])
+    @PATCH(value = Constants.API_PATH+Constants.LESSON_PATH+Constants.Toggle_Lesson_Visibility_Path+"{id}")
+    suspend fun toggleLessonVisibility(@Path("id", encoded = false) idLesson:String,@Header("authorization") token:String):Lessons
 
     @Headers(
         value = ["Content-Type: application/json"]
@@ -64,4 +75,9 @@ interface APIService {
     @Headers(value = ["Content-Type: application/json"])
     @POST(value = Constants.API_PATH + Constants.AUTH_PATH + Constants.LOGIN_PATH)
     suspend fun loginUser(@Body data: LoginData) : LoginResponse
+
+    // Obtener datos del usuario
+    @Headers(value = ["Content-type: application/json"])
+    @GET(value = Constants.API_PATH + Constants.AUTH_PATH + Constants.WHOAMI_PATH)
+    suspend fun getUser(@Header("Authorization") token: String): User
 }
