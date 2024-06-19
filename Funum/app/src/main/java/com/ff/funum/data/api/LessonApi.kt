@@ -64,3 +64,7 @@ data class UpdateTopic(
     val idLeccion :String =""
 
 )
+data class DeleteTopic(
+    @SerializedName(value = "idLeccion")
+    val idLeccion :String =""
+)
