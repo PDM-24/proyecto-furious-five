@@ -2,6 +2,7 @@ package com.ff.funum.data.api
 
 import coil.memory.MemoryCache
 import com.ff.funum.model.LoginData
+import com.ff.funum.model.User
 import com.ff.funum.utils.Constants
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -74,4 +75,9 @@ interface APIService {
     @Headers(value = ["Content-Type: application/json"])
     @POST(value = Constants.API_PATH + Constants.AUTH_PATH + Constants.LOGIN_PATH)
     suspend fun loginUser(@Body data: LoginData) : LoginResponse
+
+    // Obtener datos del usuario
+    @Headers(value = ["Content-type: application/json"])
+    @GET(value = Constants.API_PATH + Constants.AUTH_PATH + Constants.WHOAMI_PATH)
+    suspend fun getUser(@Header("Authorization") token: String): User
 }

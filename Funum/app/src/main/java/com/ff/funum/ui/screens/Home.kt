@@ -15,11 +15,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ff.funum.R
 import com.ff.funum.data.listLessons
 import com.ff.funum.ui.components.LessonCard
@@ -31,11 +34,17 @@ import com.ff.funum.ui.theme.GreenShop
 
 @Composable
 fun Home(
-    viewModel: LessonsViewModel
+    viewModel: LessonsViewModel,
+    profileViewModel: ProfileViewModel = viewModel()
 ) {
 
     LaunchedEffect(Unit) {
         viewModel.getAllLessons()
+    }
+    val points by profileViewModel.points.collectAsState()
+
+    LaunchedEffect(Unit) {
+        profileViewModel.fetchUsername()
     }
 
     FunumTheme {
@@ -67,7 +76,7 @@ fun Home(
                         contentDescription = "PIcoins",
                         Modifier.size(30.dp)
                     )
-                    Text(text = "0", Modifier.padding(10.dp))
+                    Text(text = points?.toString() ?: "Cargando...", Modifier.padding(10.dp))
                 }
 
             }
