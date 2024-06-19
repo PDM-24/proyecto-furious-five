@@ -37,6 +37,7 @@ import com.ff.funum.ui.screens.LessonsViewModel
 import com.ff.funum.ui.screens.Profile
 import com.ff.funum.ui.screens.Quiz.QuizScreen
 import com.ff.funum.ui.screens.Ranking
+import com.ff.funum.ui.screens.Ranking
 import com.ff.funum.ui.screens.Screens
 import com.ff.funum.ui.screens.Shop
 import com.ff.funum.ui.theme.DarkGreen
@@ -138,10 +139,12 @@ fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, pr
         NavHost(navController = navController,
             startDestination = Screens.Home.screen,
             modifier = Modifier.padding(paddingValues)){
+
             composable(Screens.Home.screen){ Home(viewModel, profileViewModel = profileViewModel)}
             composable(Screens.Ranking.screen){ Ranking()}
             composable(Screens.Shop.screen){ Shop(profileViewModel = profileViewModel)}
             composable(Screens.Profile.screen){ Profile(navController = navController, profileViewModel = profileViewModel)}
+
             composable(Screens.Config.screen){ Config(navController = navController)}
             composable(
                 route = "${Screens.Quiz.screen}/{examId}",

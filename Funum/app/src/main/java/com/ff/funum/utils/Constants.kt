@@ -4,7 +4,9 @@ object Constants {
     // API service
     // Modificar la BASE_URL para cada uno al probar con la API
 
+
     const val BASE_URL = "http://192.168.0.29:3500"
+
 
     const val API_PATH = "/api"
     const val WHOAMI_PATH = "/whoami"
