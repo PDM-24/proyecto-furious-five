@@ -5,7 +5,7 @@ object Constants {
     // Modificar la BASE_URL para cada uno al probar con la API
 
 
-    const val BASE_URL = "http://192.168.0.29:3500"
+    const val BASE_URL = "http://192.168.1.2:3500"
 
 
     const val API_PATH = "/api"
@@ -33,6 +33,7 @@ object Constants {
     const val LESSON_NAME = "nombre"
     const val LESSON_IMAGE = "imagen"
     const val LESSON_TOPIC_LIST = "temas"
+    const val LESSON_EXAM_LIST = "examenes"
 
     const val TOPIC_ID = "_id"
     const val TOPIC_VISIBILITY = "visibilidad"
@@ -109,4 +110,9 @@ object Constants {
 
 //    Profile
     const val USER_PATH = "user"
+
+    const val START_TOPIC= "/begin"
+    const val FINISH_TOPIC = "/end"
+    const val START_LESSON= "/begin"
+    const val FINISH_LESSON = "/end"
 }

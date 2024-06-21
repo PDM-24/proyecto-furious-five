@@ -35,7 +35,8 @@ import com.ff.funum.ui.theme.GreenShop
 @Composable
 fun Home(
     viewModel: LessonsViewModel,
-    profileViewModel: ProfileViewModel = viewModel()
+    profileViewModel: ProfileViewModel = viewModel(),
+    onClick: () -> Unit
 ) {
 
     LaunchedEffect(Unit) {
@@ -96,7 +97,7 @@ fun Home(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(listLessons) { lesson ->
-                    LessonCard(lessons = lesson)
+                    LessonCard(lessons = lesson, viewModel, onClick)
                 }
             }
         }
