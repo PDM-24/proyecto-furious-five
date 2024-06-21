@@ -1,7 +1,7 @@
 const {body} = require("express-validator");
 const validators = {};
 
-validators.createLessonValidator = [
+validators.createAvatarValidator = [
 body("costo")
 .isInt({ min: 0 }).withMessage("EL costo tiene que ser un numero entero positivo"),
 body("nombre")
