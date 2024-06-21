@@ -18,7 +18,7 @@ controller.save = async (req, res, next)=>{
 
         let avatar = await Avatar.find({imagen: imagen});
 
-        if(!avatar){
+        if(avatar.length===0){
             avatar = new Avatar();
         }else{
             return res.status(409).json({error: "El avatar ya existe"});
