@@ -14,7 +14,6 @@ controller.findAll = async (req, res, next)=>{
 controller.save = async (req, res, next)=>{
     try {
         const { costo, nombre, imagen} = req.body;
-        const {identifier} = req.params;
 
 
         let avatar = await Avatar.find({imagen: imagen});
@@ -40,3 +39,5 @@ controller.save = async (req, res, next)=>{
         next(error);
     }
 }
+
+    module.exports = controller;
