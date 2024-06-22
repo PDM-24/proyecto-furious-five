@@ -5,7 +5,8 @@ data class Exam(
     val temas: MutableList<Tema> = arrayListOf(),
     val ponderacion: Int = 0,
     val preguntas_opcion_multiple: MutableList<Pregunta_opcion_multiple> = arrayListOf(),
-    val preguntas_match: MutableList<Pregunta_match> = arrayListOf()
+    val preguntas_match: MutableList<Pregunta_match> = arrayListOf(),
+    val nombre: String = ""
 )
 
 data class Tema(

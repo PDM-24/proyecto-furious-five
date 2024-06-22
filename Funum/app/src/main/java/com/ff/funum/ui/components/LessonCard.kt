@@ -22,15 +22,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.ff.funum.data.api.LessonAPI
 import com.ff.funum.ui.screens.LessonsViewModel
+import com.ff.funum.ui.screens.Screens
 import com.ff.funum.ui.theme.Chewy
 import com.ff.funum.ui.theme.Green2
 import com.ff.funum.ui.theme.GreenTopics
 
 @Composable
-fun LessonCard(lessons: LessonAPI, viewModel: LessonsViewModel, onClick: () -> Unit) {
+fun LessonCard(
+    lessons: LessonAPI,
+    viewModel: LessonsViewModel,
+    onClick: () -> Unit,
+    navController: NavController
+) {
     var expandedLessonIndex by remember { mutableStateOf(-1) }
     lessons.leccion.forEachIndexed { index, lesson ->
         val isExpanded = expandedLessonIndex == index
@@ -91,7 +98,11 @@ fun LessonCard(lessons: LessonAPI, viewModel: LessonsViewModel, onClick: () -> U
                             }
                         }
                         if (lesson.lessonExamList.isNotEmpty()) {
-                            Column(modifier = Modifier.padding(8.dp).clickable {}) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .clickable {navController.navigate(route = "${Screens.Quiz.screen}/${lesson.lessonExamList.first()}")}
+                            ) {
                                 Text(
                                     text = "Quiz",
                                     modifier = Modifier
