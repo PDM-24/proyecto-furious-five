@@ -25,21 +25,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ff.funum.screens.Config
-import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.ff.funum.ui.screens.ProfileViewModel
+import com.ff.funum.screens.Config
 import com.ff.funum.ui.screens.Home
 import com.ff.funum.ui.screens.LessonsViewModel
 import com.ff.funum.ui.screens.Profile
+import com.ff.funum.ui.screens.ProfileViewModel
 import com.ff.funum.ui.screens.Quiz.QuizScreen
-import com.ff.funum.ui.screens.Ranking
 import com.ff.funum.ui.screens.Ranking
 import com.ff.funum.ui.screens.Screens
 import com.ff.funum.ui.screens.Shop
+import com.ff.funum.ui.screens.TopicsScreen
 import com.ff.funum.ui.theme.DarkGreen
 import com.ff.funum.ui.theme.FunumTheme
 
@@ -140,7 +140,7 @@ fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, pr
             startDestination = Screens.Home.screen,
             modifier = Modifier.padding(paddingValues)){
 
-            composable(Screens.Home.screen){ Home(viewModel, profileViewModel = profileViewModel)}
+            composable(Screens.Home.screen){ Home(viewModel, profileViewModel = profileViewModel, onClick = {navController.navigate(Screens.Topic.screen)})}
             composable(Screens.Ranking.screen){ Ranking()}
             composable(Screens.Shop.screen){ Shop(profileViewModel = profileViewModel)}
             composable(Screens.Profile.screen){ Profile(navController = navController, profileViewModel = profileViewModel)}
@@ -156,6 +156,8 @@ fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, pr
             ){ backStackEntry ->
                 QuizScreen(navController = navController, examId = backStackEntry.arguments?.getString("examId"), quizViewModel = viewModel)
             }
+
+            composable(Screens.Topic.screen) { TopicsScreen(viewModel, navController = navController) }
 
         }
 

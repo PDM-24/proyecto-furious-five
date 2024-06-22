@@ -1,6 +1,5 @@
 package com.ff.funum.data.api
 
-import coil.memory.MemoryCache
 import com.ff.funum.model.LoginData
 import com.ff.funum.model.User
 import com.ff.funum.utils.Constants
@@ -91,4 +90,42 @@ interface APIService {
     @Headers(value = ["Content-type: application/json"])
     @GET(value = Constants.API_PATH + Constants.AUTH_PATH + Constants.WHOAMI_PATH)
     suspend fun getUser(@Header("Authorization") token: String): User
+
+    // Begin Topic
+    @Headers(
+        value = ["Content-Type: application/json"]
+    )
+    @PATCH(value = "${Constants.API_PATH}${Constants.Topic_Path}${Constants.START_TOPIC}/{id}")
+    suspend fun beginTopic(
+        @Header("Authorization") token: String,
+        @Path("id") topicId: String?
+    ): BeginTopicResponse
+
+    // End Topic
+    @Headers(
+        value = ["Content-Type: application/json"]
+    )
+    @PATCH(value = "${Constants.API_PATH}${Constants.Topic_Path}${Constants.FINISH_TOPIC}/{id}")
+    suspend fun endTopic(
+        @Header("Authorization") token: String,
+        @Path("id") topicId: String?
+    ): EndTopicResponse
+
+    @Headers(
+        value = ["Content-Type: application/json"]
+    )
+    @PATCH(value = "${Constants.API_PATH}${Constants.LESSON_PATH}${Constants.START_LESSON}/{id}")
+    suspend fun beginLesson(
+        @Header("Authorization") token: String,
+        @Path("id") topicId: String?
+    ): BeginEndLessonResponse
+
+    @Headers(
+        value = ["Content-Type: application/json"]
+    )
+    @PATCH(value = "${Constants.API_PATH}${Constants.LESSON_PATH}${Constants.FINISH_LESSON}/{id}")
+    suspend fun endLesson(
+        @Header("Authorization") token: String,
+        @Path("id") topicId: String?
+    ): BeginEndLessonResponse
 }

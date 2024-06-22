@@ -19,18 +19,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.ff.funum.data.api.LessonAPI
+import com.ff.funum.ui.screens.LessonsViewModel
 import com.ff.funum.ui.theme.Chewy
 import com.ff.funum.ui.theme.Green2
 import com.ff.funum.ui.theme.GreenTopics
 
 @Composable
-fun LessonCard(lessons: LessonAPI) {
+fun LessonCard(lessons: LessonAPI, viewModel: LessonsViewModel, onClick: () -> Unit) {
     var expandedLessonIndex by remember { mutableStateOf(-1) }
-
     lessons.leccion.forEachIndexed { index, lesson ->
         val isExpanded = expandedLessonIndex == index
 
@@ -54,7 +55,8 @@ fun LessonCard(lessons: LessonAPI) {
                         modifier = Modifier
                             .padding(8.dp)
                             .size(100.dp)
-                            .clip(CircleShape)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
                     )
                     Column(
                         modifier = Modifier.padding(5.dp),
@@ -67,7 +69,11 @@ fun LessonCard(lessons: LessonAPI) {
                 if (isExpanded) {
                     Column(modifier = Modifier.background(GreenTopics)) {
                         lesson.topicList.forEachIndexed { topicIndex, topicAPI ->
-                            Column(modifier = Modifier.clickable { }) {
+                            Column(modifier = Modifier.clickable {
+                                viewModel.saveDataFromSelectedTopic(topicAPI)
+                                onClick()
+                                viewModel.beginTopic(lesson.id, topicAPI.id)
+                            }) {
                                 Text(
                                     text = "Tema ${topicIndex + 1}",
                                     modifier = Modifier
@@ -81,6 +87,18 @@ fun LessonCard(lessons: LessonAPI) {
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(12.dp, 4.dp)
+                                )
+                            }
+                        }
+                        if (lesson.lessonExamList.isNotEmpty()) {
+                            Column(modifier = Modifier.padding(8.dp).clickable {}) {
+                                Text(
+                                    text = "Quiz",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(12.dp, 4.dp),
+                                    fontFamily = Chewy,
+                                    fontSize = 28.sp
                                 )
                             }
                         }

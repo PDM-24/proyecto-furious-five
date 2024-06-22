@@ -25,7 +25,10 @@ data class Lessons(
     val imagen : String = "",
 
     @SerializedName(value = Constants.LESSON_TOPIC_LIST)
-    val topicList : MutableList<TopicAPI> = arrayListOf()
+    val topicList : MutableList<TopicAPI> = arrayListOf(),
+
+    @SerializedName(value = Constants.LESSON_EXAM_LIST)
+    val lessonExamList: Array<String> = arrayOf()
 )
 
 data class TopicAPI(
@@ -67,4 +70,51 @@ data class UpdateTopic(
 data class DeleteTopic(
     @SerializedName(value = "idLeccion")
     val idLeccion :String =""
+)
+
+data class BeginTopicResponse(
+    @SerializedName(value = "temas")
+    val temas: MutableList<TopicResponse>
+)
+
+data class TopicResponse(
+    @SerializedName(value = "tema")
+    val tema: String ="",
+
+    @SerializedName(value = "fecha_hora_inicio")
+    val fecha_hora_inicio: String="",
+
+    @SerializedName(value = "fecha_hora_fin")
+    val fecha_hora_fin: String="",
+
+    @SerializedName(value = "_id")
+    val id: String?=null
+)
+
+data class EndTopicResponse(
+    @SerializedName(value = "temas")
+    val temas: MutableList<TopicResponse>,
+    @SerializedName(value = "puntos_canjeables")
+    val puntos_canjeables: Int,
+    @SerializedName(value = "puntos_totales")
+    val puntos_totales: Int
+)
+
+data class LessonResponse(
+    @SerializedName(value = "leccion")
+    val leccion: String ="",
+
+    @SerializedName(value = "fecha_hora_inicio")
+    val fecha_hora_inicio: String="",
+
+    @SerializedName(value = "fecha_hora_fin")
+    val fecha_hora_fin: String="",
+
+    @SerializedName(value = "_id")
+    val id: String?=null
+)
+
+data class BeginEndLessonResponse(
+    @SerializedName(value = "lecciones")
+    val lecciones: MutableList<LessonResponse>
 )

@@ -16,7 +16,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,7 +35,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -44,12 +42,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.ff.funum.MainActivity
 import com.ff.funum.R
-import com.ff.funum.data.local.datastore.DataStore
 import com.ff.funum.model.LoginData
 import com.ff.funum.ui.theme.Chewy
 import com.ff.funum.ui.theme.DarkGreen
@@ -80,7 +74,7 @@ fun LoginScreen(
 
 
     if (uiState.value is UiStateAuth.Success) {
-        showMessage(context, "Logueo Exitoso!")
+        showMessage(context, "Logueo Exitoso")
         changeActivity(context, MainActivity::class.java)
         viewModel.setStateToReady()
     }

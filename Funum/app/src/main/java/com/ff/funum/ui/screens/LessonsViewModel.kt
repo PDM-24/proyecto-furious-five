@@ -36,6 +36,7 @@ import com.ff.funum.ui.screens.Quiz.QuizUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -68,6 +69,81 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
                 }
             }
         }
+    }
+
+    fun beginTopic(lessonId: String?, topicId: String?){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val token = repository.getToken()
+                if(token != null){
+                    val usuario = api.getUser("Bearer $token")
+                    val lessonStarted = usuario.lecciones.any{
+                        it.leccion == lessonId
+                    }
+                    if (!lessonStarted){
+                        api.beginLesson("Bearer $token", lessonId)
+                    }
+                    api.beginTopic("Bearer $token", topicId)
+                }
+            }catch (e: Exception) {
+                when (e) {
+                    is HttpException -> {
+                        Log.i("LessonsViewModel", e.toString())
+                    }
+                    else -> {
+                        Log.i("LessonsViewModel", e.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    fun endLesson(lessonId: String?){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val token = repository.getToken()
+                if(token != null){
+                    api.endLesson("Bearer $token", lessonId)
+                }
+            }catch (e: Exception) {
+                when (e) {
+                    is HttpException -> {
+                        Log.i("LessonsViewModel", e.toString())
+                    }
+
+                    else -> {
+                        Log.i("LessonsViewModel", e.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    fun endTopic(topicId: String?){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val token = repository.getToken()
+                if(token != null){
+                    api.endTopic("Bearer $token", topicId)
+                }
+            }catch (e: Exception) {
+                when (e) {
+                    is HttpException -> {
+                        Log.i("LessonsViewModel", e.toString())
+                    }
+                    else -> {
+                        Log.i("LessonsViewModel", e.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    private val _selectedTopic = MutableStateFlow(TopicAPI())
+    val selectedTopic = _selectedTopic.asStateFlow()
+
+    fun saveDataFromSelectedTopic(topicSelected: TopicAPI){
+        _selectedTopic.value = topicSelected
     }
 
     //Gestiona la informacion de Update topic screen
