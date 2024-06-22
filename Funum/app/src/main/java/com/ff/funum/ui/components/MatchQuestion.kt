@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ff.funum.R
 import com.ff.funum.model.Respuesta_match
+import com.ff.funum.ui.theme.Chewy
+import com.ff.funum.ui.theme.Chilanka
 
 @Composable
 fun MatchQuestion(
@@ -41,7 +43,7 @@ fun MatchQuestion(
         text = "Une los items que correspondan entre si",
         style = MaterialTheme.typography.headlineSmall,
         textAlign = TextAlign.Center,
-        color = Color.White
+        color = Color.White, fontFamily = Chilanka
     )
     ItemsDisplay(leftItems, rightItems, resolved, onResolve = onResolve, onNext = onNext)
 }
@@ -112,7 +114,7 @@ fun ItemsDisplay(
                     Text(
                         text = s.descripcion,
                         color = Color.White,
-                        fontSize = 18.sp
+                        fontSize = 18.sp, fontFamily = Chilanka
                     )
                 }
             }
@@ -197,7 +199,7 @@ fun ItemsDisplay(
                     Text(
                         text = s.descripcion,
                         color = Color.White,
-                        fontSize = 18.sp
+                        fontSize = 18.sp, fontFamily = Chilanka
                     )
                 }
             }
@@ -230,7 +232,7 @@ fun CheckButtonMatch(resolved: Boolean, onResolve: ( MutableList<Boolean> ) -> U
             }else{
                 "Siguiente"
             },
-            style = TextStyle(fontWeight = FontWeight.Bold)
+            style = TextStyle(fontWeight = FontWeight.Bold), fontFamily = Chilanka
         )
     }
 }

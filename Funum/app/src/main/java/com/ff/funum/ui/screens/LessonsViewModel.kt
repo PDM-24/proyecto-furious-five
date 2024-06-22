@@ -9,6 +9,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.datastore.dataStore
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.ff.funum.data.api.ApiClient
@@ -280,8 +281,6 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
     // Funciones para el Quiz
     var auxUiState by mutableStateOf(QuizUiState())
 
-    private val viewModelContext by lazy { getApplication<Application>().applicationContext }
-
     private val _uiState = MutableStateFlow<UiState>(UiState.Ready)
     val uiState : StateFlow<UiState> = _uiState
 
@@ -342,7 +341,7 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
                     question = Pregunta_opcion_multiple(
                         enunciado = it.enunciado,
                         respuestas = it.respuestas.shuffled().toMutableList(),
-                        tema = it.tema
+                        tema = it.tema,
                     )
                 )
             )
@@ -375,9 +374,10 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
         return Pair(leftColumn, rightColumn)
     }
 
-    fun getExam(token: String, examId: String = "656f5caaf561271c6897d647"){
+    fun getExam(examId: String){
         viewModelScope.launch(Dispatchers.IO){
             try {
+                val token = repository.getToken()
                 _uiState.value = UiState.Loading
                 val examApi = api.getExam(
                     token = "Bearer $token",
@@ -425,11 +425,11 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
                     temas = examApi.temas.map(transformTema) as MutableList<Tema>,
                     visibilidad = examApi.visibilidad,
                     preguntas_opcion_multiple = examApi.preguntas_opcion_multiple.map(transformMultipleChoice) as MutableList<Pregunta_opcion_multiple>,
-                    preguntas_match = examApi.preguntas_match.map(transformMatch) as MutableList<Pregunta_match>
+                    preguntas_match = examApi.preguntas_match.map(transformMatch) as MutableList<Pregunta_match>,
+                    nombre = examApi.nombre
                 )
 
-                Log.i("get exam", ExamData.toString())
-
+                auxUiState.name = ExamData.nombre
                 examState.value = sortExam()
 
                 _uiState.value = UiState.Ready
@@ -440,12 +440,22 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun startExam(token: String, examId: String = ""){
+    fun startExam(examId: String = ""){
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                val token = repository.getToken()
                 val response = repository.getDate(examId)
                 if(response == null){
                     _uiState.value = UiState.Loading
+
+                    val usuario = api.getUser("Bearer $token")
+                    val lessonStarted = usuario.lecciones.any{
+                        it.leccion == auxUiState.lesson
+                    }
+                    if (!lessonStarted){
+                        api.beginLesson("Bearer $token", auxUiState.lesson)
+                    }
+
                     val beginRespose = api.beginExam("Bearer $token", examId).examenes
                     repository.saveData(beginRespose.last().examen, beginRespose.last().fecha_hora_inicio)
                     _uiState.value = UiState.Ready
@@ -456,21 +466,32 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun finishExam(token: String, examId: String = "", calificacion: Int){
+    fun finishExam(examId: String = "", calificacion: Int){
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                val token = repository.getToken()
                 val _response: String? = repository.getDate(examId)
 
                 if(_response != null){
-                    _uiState.value = UiState.Loading
-                    api.finishExam("Bearer $token", examId, EndExamBody(calificacion, _response))
 
+                    _uiState.value = UiState.Loading
+
+                    api.finishExam("Bearer $token", examId, EndExamBody(calificacion, _response))
                     repository.deleteNamePreferences(examId)
+
+                    val usuario = api.getUser("Bearer $token")
+                    val lesson = usuario.lecciones.find{
+                        it.leccion == auxUiState.lesson
+                    }
+                    if (lesson?.fecha_hora_fin == null){
+                        api.endLesson("Bearer $token", auxUiState.lesson)
+                    }
                 }
 
                 _uiState.value = UiState.Success(msg = "Examen finalizado con exito")
             }catch (e: Exception){
                 Log.e("start/end exam", e.toString())
+                _uiState.value = UiState.Error(msg = "Ocurrio un error al finalizar el examen")
             }
         }
     }
@@ -480,7 +501,13 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun resetQuiz() {
-        auxUiState = QuizUiState()
+        auxUiState = auxUiState.copy(
+            currentQuestionIndex = 0,
+            points = 0,
+            resolved = false,
+            selectedAnswer = null,
+            name = ""
+        )
         examState.value = arrayListOf()
     }
 

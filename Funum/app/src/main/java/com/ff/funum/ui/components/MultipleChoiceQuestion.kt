@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.sp
 import com.ff.funum.R
 import com.ff.funum.model.Pregunta_opcion_multiple
 import com.ff.funum.model.Respuesta_opcion_multiple
+import com.ff.funum.ui.theme.Chewy
+import com.ff.funum.ui.theme.Chilanka
 
 @Composable
 fun MultipleChoiceQuestion(
@@ -35,7 +37,7 @@ fun MultipleChoiceQuestion(
         text = currentQuestionState.enunciado,
         style = MaterialTheme.typography.headlineSmall,
         color = Color.White,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center, fontFamily = Chilanka
     )
     OptionList(
         options = currentQuestionState.respuestas.toList(),
@@ -100,7 +102,7 @@ fun OptionItem(option: String, onOptionSelected: (String) -> Unit, selectedAnswe
         Text(
             text = option,
             color = Color.White,
-            fontSize = 18.sp
+            fontSize = 18.sp, fontFamily = Chilanka
         )
     }
 }
@@ -129,7 +131,7 @@ fun CheckButton(resolved: Boolean, onResolve: () -> Unit, onNext: () -> Unit, se
             }else{
                 "Siguiente"
             },
-            style = TextStyle(fontWeight = FontWeight.Bold)
+            style = TextStyle(fontWeight = FontWeight.Bold), fontFamily = Chilanka
         )
     }
 }

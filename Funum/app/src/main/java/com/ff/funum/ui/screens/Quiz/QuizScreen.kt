@@ -3,6 +3,7 @@ package com.ff.funum.ui.screens.Quiz
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,7 +32,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ff.funum.R
 import com.ff.funum.model.ExamData
@@ -42,25 +42,25 @@ import com.ff.funum.ui.components.MatchQuestion
 import com.ff.funum.ui.components.MultipleChoiceQuestion
 import com.ff.funum.ui.screens.LessonsViewModel
 import com.ff.funum.ui.screens.UiState
+import com.ff.funum.ui.theme.Chewy
+import com.ff.funum.ui.theme.Chilanka
+import com.ff.funum.ui.theme.FunumTheme
+import com.ff.funum.ui.theme.Green2
 
 @Composable
 fun QuizScreen(
     quizViewModel: LessonsViewModel,
     innerPadding: Dp = 0.dp,
     navController: NavController,
-    token: String? = "",
     examId: String? = null
 ) {
-
-    //Implementar funcion para obtener token y removerlo de los paramentros
-
     val QuizScreenState = quizViewModel.uiState.collectAsState()
 
     LaunchedEffect(true) {
         quizViewModel.resetQuiz()
-        if(token != null && examId != null){
-            quizViewModel.getExam(token, examId = examId)
-            quizViewModel.startExam(token, examId = examId)
+        if(examId != null){
+            quizViewModel.getExam(examId = examId)
+            quizViewModel.startExam(examId = examId)
         }
     }
 
@@ -81,62 +81,69 @@ fun QuizScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                color = colorResource(id = R.color.secondarySecond)
-            )
-            .padding(top = innerPadding, bottom = innerPadding)
-    ) {
-        if(QuizScreenState.value == UiState.Loading || quizViewModel.examState.value.lastIndex <= 0){
-            LoadingProgressDialog()
-        }else{
-            if(
-                quizViewModel.auxUiState.currentQuestionIndex > quizViewModel.examState.value.lastIndex){
+    FunumTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    color = colorResource(id = R.color.secondarySecond)
+                )
+                .padding(top = innerPadding, bottom = innerPadding)
+        ) {
+            if(QuizScreenState.value == UiState.Loading || quizViewModel.examState.value.lastIndex <= 0){
+                LoadingProgressDialog()
+            }else{
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Green2)
+                        .padding(10.dp), contentAlignment = Alignment.Center
+                ) {
+                    Text(text = quizViewModel.auxUiState.name, fontFamily = Chewy, fontSize = 40.sp)
+                }
+                if(quizViewModel.auxUiState.currentQuestionIndex > quizViewModel.examState.value.lastIndex){
 
-                val correctAnswers = quizViewModel.auxUiState.points
-                QuizResults(
-                    correctAnswers,
-                    quizViewModel.examState.value.size,
-                    onEndQuiz = {
-                        if(token != null){
+                    val correctAnswers = quizViewModel.auxUiState.points
+                    QuizResults(
+                        correctAnswers,
+                        quizViewModel.examState.value.size,
+                        onEndQuiz = {
                             if (examId != null) {
                                 quizViewModel.finishExam(
-                                    token = token,
                                     examId = examId,
                                     calificacion = ((correctAnswers * 10) / quizViewModel.examState.value.size)
                                 )
                             }
                         }
-                    }
-                )
+                    )
 
-            }else{
-                QuizQuestions(
-                    quizLength = quizViewModel.examState.value.size,
-                    quizUiState = quizViewModel.auxUiState,
-                    currentQuestion = quizViewModel.getCurrentQuestion().question,
-                    onOptionSelected = { selectedOption:String ->
-                        quizViewModel.updateOptionSelected(selectedOption)
-                    },
-                    onResolve = {
-                        quizViewModel.resolveQuestion()
-                    },
-                    onNext = {
-                        quizViewModel.onNext()
-                    },
-                    correctAnswer = {quizViewModel.getMultipleChoiceCorrectAnswer()},
-                    type = quizViewModel.getCurrentQuestion().type,
-                    getMatchColumns = {quizViewModel.getMatchColumns()},
-                    onResolveMatch = {correctMatches:MutableList<Boolean> ->
-                        quizViewModel.resolveQuestion(correctMatches)
-                    }
-                )
+                }else{
+                    QuizQuestions(
+                        quizLength = quizViewModel.examState.value.size,
+                        quizUiState = quizViewModel.auxUiState,
+                        currentQuestion = quizViewModel.getCurrentQuestion().question,
+                        onOptionSelected = { selectedOption:String ->
+                            quizViewModel.updateOptionSelected(selectedOption)
+                        },
+                        onResolve = {
+                            quizViewModel.resolveQuestion()
+                        },
+                        onNext = {
+                            quizViewModel.onNext()
+                        },
+                        correctAnswer = {quizViewModel.getMultipleChoiceCorrectAnswer()},
+                        type = quizViewModel.getCurrentQuestion().type,
+                        getMatchColumns = {quizViewModel.getMatchColumns()},
+                        onResolveMatch = {correctMatches:MutableList<Boolean> ->
+                            quizViewModel.resolveQuestion(correctMatches)
+                        }
+                    )
+                }
             }
-        }
 
+        }
     }
+
 }
 
 @Composable
@@ -164,7 +171,7 @@ fun QuizQuestions(
         Text(
             text = "Quiz",
             style = MaterialTheme.typography.headlineMedium,
-            color = Color.White, textAlign = TextAlign.Center
+            color = Color.White, textAlign = TextAlign.Center, fontFamily = Chilanka
         )
         Column (
             horizontalAlignment = Alignment.CenterHorizontally
@@ -172,7 +179,7 @@ fun QuizQuestions(
             Text(
                 text = "Progreso del quiz",
                 style = MaterialTheme.typography.headlineSmall,
-                color = Color.White, textAlign = TextAlign.Center
+                color = Color.White, textAlign = TextAlign.Center, fontFamily = Chilanka
             )
             LinearProgressIndicator(
                 modifier = Modifier
@@ -226,14 +233,15 @@ fun QuizResults(
         Text(
             text = "Quiz",
             style = MaterialTheme.typography.headlineMedium,
-            color = Color.White, textAlign = TextAlign.Center
+            color = Color.White, textAlign = TextAlign.Center,
+            fontFamily = Chilanka
         )
         Column (
             modifier = Modifier.width(275.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ){
-            Text(text = "Correctas / Incorrectas")
+            Text(text = "Correctas / Incorrectas", fontFamily = Chilanka)
             LinearProgressIndicator(
                 modifier = Modifier
                     .height(23.dp)
@@ -249,17 +257,17 @@ fun QuizResults(
         Text(
             text = "Respuestas correctas: $correctAnswers/$quizLength",
             color = Color.White,
-            fontSize = 20.sp
+            fontSize = 20.sp , fontFamily = Chilanka
         )
         Text(
             text = "Puntos ganados: ${ExamData.ponderacion}",
             color = Color.White,
-            fontSize = 20.sp
+            fontSize = 20.sp, fontFamily = Chilanka
         )
         Text(
             text = "Nota: $grade/10",
             color = Color.White,
-            fontSize = 20.sp
+            fontSize = 20.sp, fontFamily = Chilanka
         )
 
         Button(
@@ -271,7 +279,7 @@ fun QuizResults(
             Text(
                 text = "Volver",
                 color = Color.White,
-                style = TextStyle(fontWeight = FontWeight.Bold)
+                style = TextStyle(fontWeight = FontWeight.Bold) , fontFamily = Chilanka
             )
         }
     }

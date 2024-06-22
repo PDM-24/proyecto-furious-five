@@ -26,5 +26,7 @@ data class LessonApi(
     @SerializedName(value = Constants.LESSON_ID)
     val id: String = "",
     @SerializedName(value = "leccion")
-    val leccion: String = ""
+    val leccion: String = "",
+    @SerializedName(value = "fecha_hora_fin")
+    val fecha_hora_fin: String? = null
 )

@@ -25,7 +25,10 @@ data class ExamApi(
     val preguntas_opcion_multiple: MutableList<Pregunta_opcion_multiple_Api> = arrayListOf(),
 
     @SerializedName(value = Constants.EXAM_PREGUNTA_MATCH)
-    val preguntas_match: MutableList<Pregunta_match_api> = arrayListOf()
+    val preguntas_match: MutableList<Pregunta_match_api> = arrayListOf(),
+
+    @SerializedName(value = "nombre")
+    val nombre: String = ""
 )
 
 data class TemaApi(

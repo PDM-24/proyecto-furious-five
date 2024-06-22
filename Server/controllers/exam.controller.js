@@ -528,7 +528,7 @@ controller.endExam = async (req, res, next)=>{
            user["examenes"][index]={examen:identifier, fecha_hora_inicio: fecha_hora_inicio,fecha_hora_fin: new Date(), calificacion: calificacion };
 
            const ponderacion=_examen.tipo_Examen.ponderacion;
-           const puntos = calificacion*ponderacion/10;
+           const puntos = Math.round(calificacion*ponderacion/10);
            user["puntos_totales"] = user["puntos_totales"]+puntos;
            user["puntos_canjeables"] = user["puntos_canjeables"]+puntos;
 

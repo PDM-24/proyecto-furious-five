@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.ff.funum.R
 import com.ff.funum.data.listLessons
 import com.ff.funum.ui.components.LessonCard
@@ -36,7 +37,8 @@ import com.ff.funum.ui.theme.GreenShop
 fun Home(
     viewModel: LessonsViewModel,
     profileViewModel: ProfileViewModel = viewModel(),
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    navController: NavController
 ) {
 
     LaunchedEffect(Unit) {
@@ -97,7 +99,7 @@ fun Home(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(listLessons) { lesson ->
-                    LessonCard(lessons = lesson, viewModel, onClick)
+                    LessonCard(lessons = lesson, viewModel, onClick, navController)
                 }
             }
         }

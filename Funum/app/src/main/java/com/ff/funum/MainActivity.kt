@@ -140,7 +140,7 @@ fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, pr
             startDestination = Screens.Home.screen,
             modifier = Modifier.padding(paddingValues)){
 
-            composable(Screens.Home.screen){ Home(viewModel, profileViewModel = profileViewModel, onClick = {navController.navigate(Screens.Topic.screen)})}
+            composable(Screens.Home.screen){ Home(viewModel, profileViewModel = profileViewModel, onClick = {navController.navigate(Screens.Topic.screen)}, navController = navController)}
             composable(Screens.Ranking.screen){ Ranking()}
             composable(Screens.Shop.screen){ Shop(profileViewModel = profileViewModel)}
             composable(Screens.Profile.screen){ Profile(navController = navController, profileViewModel = profileViewModel)}
