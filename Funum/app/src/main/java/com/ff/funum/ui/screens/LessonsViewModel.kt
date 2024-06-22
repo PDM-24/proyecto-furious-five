@@ -71,11 +71,18 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun beginTopic(topicId: String?){
+    fun beginTopic(lessonId: String?, topicId: String?){
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val token = repository.getToken()
                 if(token != null){
+                    val usuario = api.getUser("Bearer $token")
+                    val lessonStarted = usuario.lecciones.any{
+                        it.leccion == lessonId
+                    }
+                    if (!lessonStarted){
+                        api.beginLesson("Bearer $token", lessonId)
+                    }
                     api.beginTopic("Bearer $token", topicId)
                 }
             }catch (e: Exception) {
@@ -83,28 +90,6 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
                     is HttpException -> {
                         Log.i("LessonsViewModel", e.toString())
                     }
-
-                    else -> {
-                        Log.i("LessonsViewModel", e.toString())
-                    }
-                }
-            }
-        }
-    }
-
-    fun beginLesson(lessonId: String?){
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val token = repository.getToken()
-                if(token != null){
-                    api.beginTopic("Bearer $token", lessonId)
-                }
-            }catch (e: Exception) {
-                when (e) {
-                    is HttpException -> {
-                        Log.i("LessonsViewModel", e.toString())
-                    }
-
                     else -> {
                         Log.i("LessonsViewModel", e.toString())
                     }

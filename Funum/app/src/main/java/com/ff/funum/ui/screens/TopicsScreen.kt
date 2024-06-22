@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -49,10 +51,10 @@ fun TopicsScreen(
                 .padding(10.dp)
         ) {
             Text(
-                "Lección",
+                topic.value.nombre,
                 fontFamily = Chewy,
                 color = White,
-                fontSize = 50.sp,
+                fontSize = 30.sp,
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -63,12 +65,13 @@ fun TopicsScreen(
             modifier = Modifier
                 .padding(10.dp, 10.dp, 10.dp, 150.dp)
                 .fillMaxHeight()
-                .verticalScroll(rememberScrollState())
         ) {
-            Row {
-                Text(text = topic.value.nombre, fontFamily = Chilanka, color = White, fontSize = 30.sp)
-            }
-            Column(horizontalAlignment = Alignment.Start, modifier = Modifier.padding(8.dp)) {
+            Column(horizontalAlignment = Alignment.Start, modifier = Modifier
+                .padding(8.dp)
+                .verticalScroll(
+                    rememberScrollState()
+                )
+                .weight(3f)) {
                 Text(text = "Resumen", fontFamily = Chilanka, color = White, fontSize = 30.sp)
                 Text(
                     text = topic.value.contenido,
@@ -79,19 +82,24 @@ fun TopicsScreen(
                 Row (horizontalArrangement = Arrangement.Center, modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp)){
-                    AsyncImage(model = topic.value.imagen, contentDescription = "Imagen Tema")
+                    AsyncImage(model = topic.value.imagen.first(), contentDescription = "Imagen Tema", modifier = Modifier.size(200.dp), contentScale = ContentScale.Crop)
                 }
             }
-            Row (modifier = Modifier
-                .fillMaxWidth()
-                .padding(30.dp, 0.dp), horizontalArrangement = Arrangement.Center){
-                Button(onClick = { navController.navigate(Screens.Home.screen)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(30.dp, 0.dp)
+                    .weight(1f),
+                    horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(onClick = {
+                    navController.navigate(Screens.Home.screen)
                     viewModel.endTopic(topic.value.id)
-                                 }, colors = ButtonDefaults.buttonColors(containerColor = SecondaryDarkGreen)) {
-                    Text(text = "VOLVER", color = White, fontSize = 15.sp)
+                }, colors = ButtonDefaults.buttonColors(containerColor = SecondaryDarkGreen)) {
+                    Text(text = "FINALIZAR TEMA", color = White, fontSize = 15.sp)
                 }
             }
         }
-
     }
 }

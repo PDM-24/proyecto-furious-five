@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -54,7 +55,8 @@ fun LessonCard(lessons: LessonAPI, viewModel: LessonsViewModel, onClick: () -> U
                         modifier = Modifier
                             .padding(8.dp)
                             .size(100.dp)
-                            .clip(CircleShape)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
                     )
                     Column(
                         modifier = Modifier.padding(5.dp),
@@ -70,8 +72,7 @@ fun LessonCard(lessons: LessonAPI, viewModel: LessonsViewModel, onClick: () -> U
                             Column(modifier = Modifier.clickable {
                                 viewModel.saveDataFromSelectedTopic(topicAPI)
                                 onClick()
-                                viewModel.beginTopic(topicAPI.id)
-                                viewModel.beginLesson(lesson.id)
+                                viewModel.beginTopic(lesson.id, topicAPI.id)
                             }) {
                                 Text(
                                     text = "Tema ${topicIndex + 1}",
