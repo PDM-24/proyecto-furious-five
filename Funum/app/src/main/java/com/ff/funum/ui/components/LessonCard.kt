@@ -101,7 +101,10 @@ fun LessonCard(
                             Column(
                                 modifier = Modifier
                                     .padding(8.dp)
-                                    .clickable {navController.navigate(route = "${Screens.Quiz.screen}/${lesson.lessonExamList.first()}")}
+                                    .clickable {
+                                        viewModel.auxUiState.lesson = lesson.id
+                                        navController.navigate(route = "${Screens.Quiz.screen}/${lesson.lessonExamList.first()}")
+                                    }
                             ) {
                                 Text(
                                     text = "Quiz",

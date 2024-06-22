@@ -447,6 +447,15 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
                 val response = repository.getDate(examId)
                 if(response == null){
                     _uiState.value = UiState.Loading
+
+                    val usuario = api.getUser("Bearer $token")
+                    val lessonStarted = usuario.lecciones.any{
+                        it.leccion == auxUiState.lesson
+                    }
+                    if (!lessonStarted){
+                        api.beginLesson("Bearer $token", auxUiState.lesson)
+                    }
+
                     val beginRespose = api.beginExam("Bearer $token", examId).examenes
                     repository.saveData(beginRespose.last().examen, beginRespose.last().fecha_hora_inicio)
                     _uiState.value = UiState.Ready
@@ -464,14 +473,25 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
                 val _response: String? = repository.getDate(examId)
 
                 if(_response != null){
-                    api.finishExam("Bearer $token", examId, EndExamBody(calificacion, _response))
 
+                    _uiState.value = UiState.Loading
+
+                    api.finishExam("Bearer $token", examId, EndExamBody(calificacion, _response))
                     repository.deleteNamePreferences(examId)
+
+                    val usuario = api.getUser("Bearer $token")
+                    val lesson = usuario.lecciones.find{
+                        it.leccion == auxUiState.lesson
+                    }
+                    if (lesson?.fecha_hora_fin == null){
+                        api.endLesson("Bearer $token", auxUiState.lesson)
+                    }
                 }
 
                 _uiState.value = UiState.Success(msg = "Examen finalizado con exito")
             }catch (e: Exception){
                 Log.e("start/end exam", e.toString())
+                _uiState.value = UiState.Error(msg = "Ocurrio un error al finalizar el examen")
             }
         }
     }
@@ -481,7 +501,13 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun resetQuiz() {
-        auxUiState = QuizUiState()
+        auxUiState = auxUiState.copy(
+            currentQuestionIndex = 0,
+            points = 0,
+            resolved = false,
+            selectedAnswer = null,
+            name = ""
+        )
         examState.value = arrayListOf()
     }
 
