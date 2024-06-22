@@ -5,7 +5,7 @@ object Constants {
     // Modificar la BASE_URL para cada uno al probar con la API
 
 
-    const val BASE_URL = "http://192.168.1.9:3500"
+    const val BASE_URL = "http://192.168.1.2:3500"
 
 
     const val API_PATH = "/api"

@@ -1,14 +1,10 @@
 package com.ff.funum.ui.screens
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ff.funum.data.api.ApiClient
 import com.ff.funum.data.api.RegisterApi
@@ -27,7 +23,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val _uiState = MutableStateFlow<UiStateAuth>(UiStateAuth.Ready)
     val uiState: StateFlow<UiStateAuth> = _uiState
     private val viewModelContext by lazy { getApplication<Application>().applicationContext }
-    private val dataStore = DataStore(viewModelContext)
+    val dataStore = DataStore(viewModelContext)
     fun setStateToReady (){
         _uiState.value = UiStateAuth.Ready
     }
@@ -60,6 +56,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 _uiState.value = UiStateAuth.Loading
                 val result = ApiClient.apiService.loginUser(loginData)
                 Log.i("MainViewModel", result.toString())
+                setRememberMe(loginData.remember)
                 _uiState.value = UiStateAuth.Success(result.token)
                 dataStore.saveToken(viewModelContext, result.token)
             }
@@ -67,6 +64,11 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 Log.i("MainViewModel", "ERROR! $e")
                 _uiState.value = UiStateAuth.Error(400)
             }
+        }
+    }
+    private fun setRememberMe(value: Boolean){
+        viewModelScope.launch (Dispatchers.IO){
+            dataStore.saveRememberMe(value)
         }
     }
 }

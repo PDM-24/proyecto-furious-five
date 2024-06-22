@@ -8,5 +8,7 @@ data class LoginData (
     var identifier: String = "",
 
     @SerializedName(value = Constants.LOGIN_PWD)
-    var pwd: String = ""
+    var pwd: String = "",
+
+    var remember: Boolean = false
 )

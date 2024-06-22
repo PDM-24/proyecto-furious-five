@@ -4,8 +4,10 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -169,6 +172,12 @@ fun LoginScreen(
                     modifier = Modifier.padding(20.dp)
                 )
             }
+            LabeledCheckbox(
+                onCheckChanged = {
+                    loginData = loginData.copy(remember = !loginData.remember)
+                },
+                isChecked = loginData.remember
+            )
         }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Button(
@@ -199,4 +208,22 @@ fun showMessage(
         msg,
         Toast.LENGTH_SHORT
     ).show()
+}
+
+@Composable
+fun LabeledCheckbox(
+    onCheckChanged: () -> Unit,
+    isChecked: Boolean
+) {
+    Row(
+        Modifier
+            .clickable(
+                onClick = onCheckChanged
+            )
+            .padding(4.dp)
+    ) {
+        Checkbox(checked = isChecked, onCheckedChange = null)
+        Spacer(Modifier.size(6.dp))
+        Text("Recuerdame")
+    }
 }
