@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.annotation.RequiresExtension
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.datastore.dataStore
@@ -18,6 +19,7 @@ import com.ff.funum.data.api.EndExamBody
 import com.ff.funum.data.api.Lessons
 import com.ff.funum.data.api.Pregunta_match_api
 import com.ff.funum.data.api.Pregunta_opcion_multiple_Api
+import com.ff.funum.data.api.RankingRespose
 import com.ff.funum.data.api.Respuesta_match_api
 import com.ff.funum.data.api.Respuesta_opcion_multiple_api
 import com.ff.funum.data.api.TemaApi
@@ -33,6 +35,7 @@ import com.ff.funum.model.Respuesta_match
 import com.ff.funum.model.Respuesta_opcion_multiple
 import com.ff.funum.model.SortedQuestion
 import com.ff.funum.model.Tema
+import com.ff.funum.model.rankingData
 import com.ff.funum.ui.screens.Quiz.QuizUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -492,6 +495,21 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
             }catch (e: Exception){
                 Log.e("start/end exam", e.toString())
                 _uiState.value = UiState.Error(msg = "Ocurrio un error al finalizar el examen")
+            }
+        }
+    }
+
+    val ranking = mutableStateOf(rankingData)
+    fun getRanking(){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val token = repository.getToken()
+                if(token != null){
+                    ranking.value = api.getRanking(token = "Bearer $token").ranking.toMutableList()
+                }
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(e.toString())
+                Log.i("Rankingaaa", e.toString())
             }
         }
     }

@@ -23,13 +23,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.ff.funum.R
+import com.ff.funum.data.api.User_ranking
 import com.ff.funum.model.UserDataModel
 import com.ff.funum.ui.theme.FontChilanka
 import com.ff.funum.ui.theme.PrincipalLightGreen
 
 @Composable
-fun RankingCard(user: UserDataModel, index: Int){
+fun RankingCard(user: User_ranking, index: Int){
     Card(modifier = Modifier
         .fillMaxWidth()
         .background(PrincipalLightGreen)) {
@@ -47,8 +49,8 @@ fun RankingCard(user: UserDataModel, index: Int){
                 style = FontChilanka
             )
             val borderWidth = 0.05.dp
-            Image(
-                painter = painterResource(id = user.imagen),
+            AsyncImage(
+                model = user.avatar_actual,
                 contentDescription = "Foto de perfil del jugador",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -59,9 +61,6 @@ fun RankingCard(user: UserDataModel, index: Int){
                         BorderStroke(borderWidth, Color.White),
                         CircleShape
                     )
-
-
-
             )
 
             Text(
@@ -77,21 +76,9 @@ fun RankingCard(user: UserDataModel, index: Int){
             Text(
                 modifier = Modifier
                     .padding(10.dp,0.dp),
-                text = user.puntos.toString(),
+                text = user.puntos_totales.toString(),
                 color = Color.White,
                 style = FontChilanka,)
         }
     }
-}
-
-@Composable
-@Preview
-fun PreviewRankingCard(){
-    RankingCard(UserDataModel(
-        1,
-        "Melissa Avelar",
-        "natalia@gmail.com",
-        R.drawable.puppies,
-        2000
-    ), 1)
 }
