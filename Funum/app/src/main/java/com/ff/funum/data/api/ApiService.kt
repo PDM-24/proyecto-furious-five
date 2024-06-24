@@ -128,4 +128,12 @@ interface APIService {
         @Header("Authorization") token: String,
         @Path("id") topicId: String?
     ): BeginEndLessonResponse
+
+    @Headers(
+        value = ["Content-Type: application/json"]
+    )
+    @GET(value = "${Constants.API_PATH}${Constants.AUTH_PATH}${Constants.AUTH_RANKING_PATH}")
+    suspend fun getRanking(
+        @Header("Authorization") token: String
+    ): RankingRespose
 }

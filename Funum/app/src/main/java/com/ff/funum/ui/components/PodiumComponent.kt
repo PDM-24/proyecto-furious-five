@@ -30,7 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import coil.compose.AsyncImage
 import com.ff.funum.R
+import com.ff.funum.data.api.User_ranking
 import com.ff.funum.model.UserDataModel
 import com.ff.funum.ui.theme.Aqua
 import com.ff.funum.ui.theme.ChilankaFont
@@ -38,7 +40,7 @@ import com.ff.funum.ui.theme.OldYellow
 import com.ff.funum.ui.theme.Pink
 
 @Composable
-fun FirstPlace(user : UserDataModel){
+fun FirstPlace(user : User_ranking){
     Column (
 
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,7 +48,9 @@ fun FirstPlace(user : UserDataModel){
     )
     {
         val borderWidth = 0.05.dp
-        Image(painter = painterResource(id =user.imagen ), contentDescription = "Foto del jugador en tercer lugar",
+        AsyncImage(
+            model = user.avatar_actual,
+            contentDescription = "Foto del jugador en tercer lugar",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(72.dp)
@@ -79,15 +83,14 @@ fun FirstPlace(user : UserDataModel){
 }
 
 @Composable
-fun SecondPlace(user : UserDataModel){
+fun SecondPlace(user : User_ranking){
     Column (
-
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom,
     )
     {
         val borderWidth = 0.05.dp
-        Image(painter = painterResource(id =user.imagen ), contentDescription = "Foto del jugador en tercer lugar",
+        AsyncImage(model = user.avatar_actual, contentDescription = "Foto del jugador en tercer lugar",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(72.dp)
@@ -120,7 +123,7 @@ fun SecondPlace(user : UserDataModel){
 }
 
 @Composable
-fun ThirdPlace(user : UserDataModel){
+fun ThirdPlace(user : User_ranking){
     Column (
 
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -128,7 +131,7 @@ fun ThirdPlace(user : UserDataModel){
     )
     {
         val borderWidth = 0.05.dp
-        Image(painter = painterResource(id =user.imagen ), contentDescription = "Foto del jugador en tercer lugar",
+        AsyncImage(model = user.avatar_actual, contentDescription = "Foto del jugador en tercer lugar",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(72.dp)
@@ -161,7 +164,7 @@ fun ThirdPlace(user : UserDataModel){
 }
 
 @Composable
-fun Podium(first : UserDataModel, second: UserDataModel, third: UserDataModel){
+fun Podium(first : User_ranking, second: User_ranking, third: User_ranking){
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Bottom,
@@ -174,30 +177,4 @@ fun Podium(first : UserDataModel, second: UserDataModel, third: UserDataModel){
         SecondPlace(second)
 
     }
-}
-
-@Composable
-@Preview
-fun podiumPreview(){
-    Podium(UserDataModel(
-        1,
-        "Melissa",
-        "natalia@gmail.com",
-        R.drawable.puppies,
-        2000
-    ),
-        UserDataModel(
-            1,
-            "Melissa Avelar",
-            "natalia@gmail.com",
-            R.drawable.puppies,
-            2000
-        ),
-        UserDataModel(
-            1,
-            "Melissa Avelar",
-            "natalia@gmail.com",
-            R.drawable.puppies,
-            2000
-        ))
 }
