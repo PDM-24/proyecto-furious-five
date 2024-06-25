@@ -31,8 +31,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ff.funum.screens.Config
+
 import com.ff.funum.ui.screens.AddAvatar
 import com.ff.funum.ui.screens.AvatarViewModel
+import com.ff.funum.ui.screens.AdminExam.SaveExamScreen
 import com.ff.funum.ui.screens.Home
 import com.ff.funum.ui.screens.LessonsViewModel
 import com.ff.funum.ui.screens.Profile
@@ -42,6 +44,8 @@ import com.ff.funum.ui.screens.Ranking
 import com.ff.funum.ui.screens.Screens
 import com.ff.funum.ui.screens.Shop
 import com.ff.funum.ui.screens.TopicsScreen
+import com.ff.funum.ui.screens.UpdateLessonScreen
+import com.ff.funum.ui.screens.UpdateTopicScreen
 import com.ff.funum.ui.theme.DarkGreen
 import com.ff.funum.ui.theme.FunumTheme
 
@@ -68,6 +72,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, profileViewModel: ProfileViewModel, avatarViewModel: AvatarViewModel){
     val navController = rememberNavController()
@@ -144,9 +149,9 @@ fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, pr
             modifier = Modifier.padding(paddingValues)){
 
             composable(Screens.Home.screen){ Home(viewModel, profileViewModel = profileViewModel, onClick = {navController.navigate(Screens.Topic.screen)}, navController = navController)}
-            composable(Screens.Ranking.screen){ Ranking()}
             composable(Screens.Shop.screen){ Shop(navController = navController, profileViewModel = profileViewModel, avatarViewModel = avatarViewModel)}
             composable(Screens.AddAvatar.screen) { AddAvatar(navController = navController, avatarViewModel = avatarViewModel) }
+            composable(Screens.Ranking.screen){ Ranking(viewModel)}
             composable(Screens.Profile.screen){ Profile(navController = navController, profileViewModel = profileViewModel)}
 
             composable(Screens.Config.screen){ Config(navController = navController)}
@@ -160,8 +165,53 @@ fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, pr
             ){ backStackEntry ->
                 QuizScreen(navController = navController, examId = backStackEntry.arguments?.getString("examId"), quizViewModel = viewModel)
             }
+            composable(
+                route = "${Screens.UpdateLesson.screen}/{accion}",
+                arguments = listOf(
+                    navArgument("accion"){
+                        type = NavType.StringType
+                    }
+                )
+            ){ backStackEntry ->
+                backStackEntry.arguments?.getString("accion")
+                    ?.let { UpdateLessonScreen(viewModel = viewModel, accion = it, navController = navController) }
+            }
+            composable(
+                route = "${Screens.UpdateTopic.screen}/{accion}/{idLesson}",
+                arguments = listOf(
+                    navArgument("accion"){
+                        type = NavType.StringType
+                    } ,
+                    navArgument("idLesson"){
+                        type = NavType.StringType
+                    }
+                )
+            ){ backStackEntry ->
+                backStackEntry.arguments?.getString("accion")
+                    ?.let { UpdateTopicScreen(viewModel = viewModel, accion = it, navController = navController, idLesson = backStackEntry.arguments!!.getString("idLesson")!!) }
+            }
+            composable(
+                route = "${Screens.Quiz.screen}/{examId}",
+                arguments = listOf(
+                    navArgument("examId"){
+                        type = NavType.StringType
+                    }
+                )
+            ){ backStackEntry ->
+                QuizScreen(navController = navController, examId = backStackEntry.arguments?.getString("examId"), quizViewModel = viewModel)
+            }
 
             composable(Screens.Topic.screen) { TopicsScreen(viewModel, navController = navController) }
+            composable(
+                route = "${Screens.CreateQuiz.screen}/{leccionId}",
+                arguments = listOf(
+                    navArgument("leccionId"){
+                        type = NavType.StringType
+                    }
+                )
+            ){ backStackEntry ->
+                SaveExamScreen(navController = navController, leccionId = backStackEntry.arguments?.getString("leccionId"), viewModel = viewModel)
+            }
 
         }
 
