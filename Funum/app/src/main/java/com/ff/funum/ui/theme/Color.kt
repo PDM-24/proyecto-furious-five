@@ -30,7 +30,7 @@ val GreenTopics = Color(0xFF7CA697)
 val LightGreen = Color(0xFFC1D9D2)
 val GreenShop = Color(0xFFC5D9D3)
 val White = Color(0xFFFFFFFF)
-val LightGray = Color(0xFFD9D9D9)
+val LightGray = Color(0xFF585656)
 val Black = Color(0xFF000000)
 
 

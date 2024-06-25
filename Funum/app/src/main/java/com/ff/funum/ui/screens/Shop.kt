@@ -1,5 +1,6 @@
 package com.ff.funum.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,8 +17,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.clickable
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -44,11 +52,27 @@ import com.ff.funum.ui.theme.GreenShop
 import com.ff.funum.ui.theme.GreenTopics
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.AsyncImage
+import coil.compose.rememberImagePainter
+import com.ff.funum.model.Avatar
 
 @Composable
-fun Shop(profileViewModel: ProfileViewModel = viewModel()){
+fun Shop(navController: NavController, profileViewModel: ProfileViewModel = viewModel(), avatarViewModel: AvatarViewModel = viewModel()){
 
     val points by profileViewModel.points.collectAsState()
+    val roles by profileViewModel.roles.collectAsState()
+    val avatars by avatarViewModel.avatars.observeAsState(emptyList())
+    var selectedAvatar by remember { mutableStateOf<Avatar?>(null) }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        avatarViewModel.fetchAvatars()
+    }
 
     LaunchedEffect(Unit) {
         profileViewModel.fetchUsername()
@@ -111,6 +135,37 @@ fun Shop(profileViewModel: ProfileViewModel = viewModel()){
             )
         }
 
+        // Mostrar botón "Agregar Avatar" si el usuario es admin
+        if (roles.contains("admin")) {
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(GreenTopics)
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Button(
+                    onClick = { navController.navigate(Screens.AddAvatar.screen) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = GreenTopics,
+                        contentColor = White // Puedes ajustar este color según tus necesidades
+                    )
+                ) {
+                    Text(
+                        text = "Agregar Avatar",
+                        style = TextStyle(
+                            fontFamily = Chewy,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 25.sp,
+                            color = White,
+                            textAlign = TextAlign.Center
+                        ),
+                    )
+                }
+            }
+        }
+
         // Grid de items
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
@@ -119,33 +174,35 @@ fun Shop(profileViewModel: ProfileViewModel = viewModel()){
                 .background(GreenShop),
             contentPadding = PaddingValues(8.dp)
         ) {
-            items(11) { index ->
+            items(avatars) { avatar ->
                 AvatarItem(
-                    imageResId = when (index) {
-                        0 -> R.drawable.avatar1
-                        1 -> R.drawable.avatar2
-                        2 -> R.drawable.avatar3
-                        3 -> R.drawable.avatar4
-                        4 -> R.drawable.avatar5
-                        5 -> R.drawable.avatar6
-                        6 -> R.drawable.avatar7
-                        7 -> R.drawable.avatar8
-                        8 -> R.drawable.avatar9
-                        9 -> R.drawable.avatar10
-                        10 -> R.drawable.avatar11
-                        else -> R.drawable.avatar1
+                    avatar = avatar,
+                    onAvatarClick = {
+                        // Establecer el avatar seleccionado y mostrar el diálogo
+                        selectedAvatar = avatar
                     },
-                    cost = 50
+                    onBuyClick = { imagen, costo ->
+                        // Este onClick se llamará solo cuando se confirme la compra
+                        avatarViewModel.buyAvatar(avatar.imagen, avatar.costo,
+                            onSuccess = {
+                                Toast.makeText(context, "Avatar comprado correctamente", Toast.LENGTH_SHORT).show()
+                            },
+                            onError = { error ->
+                                Toast.makeText(context, "Error al comprar avatar: $error", Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    }
                 )
             }
+
         }
-
-
     }
 }
 
 @Composable
-fun AvatarItem (imageResId : Int, cost: Int){
+fun AvatarItem (avatar: Avatar, onAvatarClick: () -> Unit, onBuyClick: (String, Int) -> Unit){
+    var showDialog by remember { mutableStateOf(false) }
+
     Column (
         modifier = Modifier
             .padding(8.dp)
@@ -153,15 +210,22 @@ fun AvatarItem (imageResId : Int, cost: Int){
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Imagen del avatar
         Image(
-            painter = painterResource(id = imageResId),
+            painter = rememberImagePainter(avatar.imagen),
             contentDescription = null,
             modifier = Modifier
                 .size(100.dp)
                 .padding(16.dp)
+                .clickable {
+                    // Mostrar el diálogo de confirmación al hacer clic en la imagen
+                    showDialog = true
+                }
         )
+
+        // Texto del ítem
         Text(
-            text = "Item",
+            text = avatar.nombre,
             style = TextStyle(
                 fontFamily = Chilanka,
                 fontWeight = FontWeight.Normal,
@@ -169,6 +233,8 @@ fun AvatarItem (imageResId : Int, cost: Int){
                 color = White
             ),
         )
+
+        // Costo del avatar
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(8.dp)
@@ -180,7 +246,7 @@ fun AvatarItem (imageResId : Int, cost: Int){
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "$cost",
+                text = "${avatar.costo}",
                 style = TextStyle(
                     fontFamily = Chewy,
                     fontWeight = FontWeight.Normal,
@@ -191,5 +257,57 @@ fun AvatarItem (imageResId : Int, cost: Int){
             )
         }
 
+        // Diálogo de confirmación
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = {
+                    Text(text = "Confirmación")
+                },
+                text = {
+                    Column {
+                        Image(
+                            painter = rememberImagePainter(avatar.imagen),
+                            contentDescription = null,
+                            modifier = Modifier.size(100.dp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "¿Deseas comprar este avatar por ${avatar.costo}?",
+                            style = TextStyle(
+                                fontFamily = Chewy,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 16.sp,
+                                color = White,
+                                textAlign = TextAlign.Center
+                            ),
+                        )
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showDialog = false
+                            // Llamar a la función de clic del avatar
+                            onBuyClick(avatar.imagen, avatar.costo)
+                        }
+                    ) {
+                        Text(text = "Confirmar")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { showDialog = false }
+                    ) {
+                        Text(text = "Cancelar")
+                    }
+                }
+            )
+        }
     }
 }
+
+
+
+
+

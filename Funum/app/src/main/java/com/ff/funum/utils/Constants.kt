@@ -5,17 +5,26 @@ object Constants {
     // Modificar la BASE_URL para cada uno al probar con la API
 
 
+
     const val BASE_URL = "http://192.168.1.14:3500"
 
 
     const val API_PATH = "/api"
     const val WHOAMI_PATH = "/whoami"
+    const val AVATAR_PATH = "/avatar"
+    const val BUYAVATAR_PATH = "/buyAvatar"
 
     const val LESSON_PATH = "/lesson"
 
     const val AUTH_PATH = "/auth"
     const val REGISTER_PATH = "/register"
     const val LOGIN_PATH = "/login"
+    const val AUTH_RANKING_PATH = "/ranking"
+
+    const val AUTH_NOMBRE = "nombre"
+    const val AUTH_PUNTOS_TOTALES = "puntos_totales"
+    const val AUTH_AVATAR_ACTUAL = "avatar_actual"
+    const val AUTH_RANKING = "ranking"
 
     const val ALL_LESSONS = "/"
     // Update Lesson
@@ -92,6 +101,15 @@ object Constants {
     const val START_EXAM = "/begin"
     // Finish Exam
     const val FINISH_EXAM = "/end"
+
+    const val SAVE_EXAM_PATH = "/6562d5f446fa0e9cba08a733"
+
+    const val SAVE_EXAM_NOMBRE = "nombre"
+    const val SAVE_EXAM_DESCRIPCION = "descripcion"
+    const val SAVE_EXAM_PONDERACION = "ponderacion"
+    const val SAVE_EXAM_TIPO = "tipo"
+    const val SAVE_EXAM_TEMAID = "temaId"
+    const val SAVE_EXAM_IDLECCION = "idLeccion"
 
     const val EXAM_ID = "_id"
     const val EXAM_VISIBILIDAD = "visibilidad"

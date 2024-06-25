@@ -132,3 +132,18 @@ data class EndExamBody(
     @SerializedName(value = "fecha_hora_inicio")
     val fecha_hora_inicio: String? = "2023-11-29T01:28:21.907Z"
 )
+
+data class AdminSaveExam(
+    @SerializedName(value = Constants.SAVE_EXAM_NOMBRE)
+    val nombre: String = "",
+    @SerializedName(value = Constants.SAVE_EXAM_DESCRIPCION)
+    val descripcion: String = "",
+    @SerializedName(value = Constants.SAVE_EXAM_PONDERACION)
+    val ponderacion: String = "",
+    @SerializedName(value = Constants.SAVE_EXAM_TIPO)
+    val tipo: String = "evaluado",
+    @SerializedName(value = Constants.SAVE_EXAM_TEMAID)
+    val temaId: String = "",
+    @SerializedName(value = Constants.SAVE_EXAM_IDLECCION)
+    val idLeccion: String? = ""
+)
