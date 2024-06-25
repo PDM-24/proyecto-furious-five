@@ -214,7 +214,7 @@ fun LessonCard(
                                                 )
 
 
-                                    }else{
+                                    }else if(viewModel.admin){
                                         if (viewModel.admin) {
                                             Row(
                                                 Modifier.fillMaxWidth(),
@@ -489,7 +489,7 @@ fun LessonCard(
                                                 )
                                             }
                                         }
-                                    }else{
+                                    }else if(viewModel.admin){
                                         if (viewModel.admin) {
                                             Row(
                                                 Modifier.fillMaxWidth(),
