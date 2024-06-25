@@ -4,6 +4,7 @@ import com.ff.funum.model.LoginData
 import com.ff.funum.model.User
 import com.ff.funum.utils.Constants
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -29,7 +30,7 @@ interface APIService {
 
     //Delete topic
     @Headers(value = ["Content-Type: application/json"])
-    @PATCH(value = Constants.API_PATH+Constants.Topic_Path+Constants.Delete_Topic_Path+"{id}")
+    @DELETE(value = Constants.API_PATH+Constants.Topic_Path+Constants.Delete_Topic_Path+"{id}")
     suspend fun deleteTopic(@Body idLesson: DeleteTopic,@Path("id", encoded = false) idTopic:String,@Header("authorization") token:String):ApiResponseSuccessful
 
 
@@ -45,7 +46,7 @@ interface APIService {
 
     //Delete lesson
     @Headers(value = ["Content-Type: application/json"])
-    @PATCH(value = Constants.API_PATH+Constants.LESSON_PATH+Constants.Delete_Lesson_Path+"{id}")
+    @DELETE(value = Constants.API_PATH+Constants.LESSON_PATH+Constants.Delete_Lesson_Path+"{id}")
     suspend fun deleteLesson(@Path("id", encoded = false) idLesson:String,@Header("authorization") token:String):ApiResponseSuccessful
 
     @Headers(

@@ -117,12 +117,12 @@ fun UpdateTopicComponent(accion: String,viewModel: LessonsViewModel,idLesson: St
             ButtonUpdate(function = { viewModel.updatedTopic= TopicAPI() }, texto = "Cancelar")
             if(accion==="Agregar"){
                 ButtonUpdate(function = {
-                    viewModel.updatedTopic.id?.let { viewModel.updateTopic(viewModel.updatedTopic, visible = topic.visibility, idTopic = it, idLesson = idLesson, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
+                    viewModel.updatedTopic.id?.let { viewModel.updateTopic(viewModel.updatedTopic, visible = topic.visibility, idTopic = it, idLesson = idLesson) }
                     viewModel.updatedTopic= TopicAPI()
                 }, texto = "Agregar")
             }else if(accion==="Actualizar"){
                 ButtonUpdate(function = {
-                    viewModel.updatedTopic.id?.let { viewModel.updateTopic(viewModel.updatedTopic, visible = topic.visibility, idTopic = it, idLesson = idLesson, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MTg2NDU1MzgsImlhdCI6MTcxNzM0OTUzOH0.w6BZb-nl7VdKbuwsvi8NCy3nUpVAbY-zn49b1-Tqz50") }
+                    viewModel.updatedTopic.id?.let { viewModel.updateTopic(viewModel.updatedTopic, visible = topic.visibility, idTopic = it, idLesson = idLesson) }
                     viewModel.updatedTopic=TopicAPI()
                 }, texto = "Actualizar")
             }
