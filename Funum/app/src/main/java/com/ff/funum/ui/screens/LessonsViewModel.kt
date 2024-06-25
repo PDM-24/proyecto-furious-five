@@ -173,7 +173,7 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
 
     //Gestiona la informacion de Update topic screen
     var updatedTopic :TopicAPI= TopicAPI()
-
+    var topic: TopicAPI=TopicAPI(id = "",imagen = listOf(""))
     //Update topic
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun updateTopic(topic: TopicAPI, idLesson:String, idTopic:String="",visible: Boolean) {
@@ -221,20 +221,23 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
             }
         }
     }
+
+    var _idLesson: String=""
+    var _idTopic: String=""
     //Delete topic
-    fun deleteTopic(idTopic:String="", idLesson: String) {
+    fun deleteTopic(idTopic:String, idLesson: String) {
         viewModelScope.launch(Dispatchers.IO){
-            try {
+            try{
                 val token = repository.getToken()
-                val response = api.deleteTopic( DeleteTopic(idLesson),idTopic, "Bearer $token")
+                val response = token?.let { api.deleteTopic(DeleteTopic(idLesson),idTopic, "Bearer $it") }
                 Log.i("MainViewModel",response.toString())
             }catch (e:Exception){
                 when(e){
-                    is retrofit2.HttpException -> {
-                        e.message?.let { Log.i("MainViewmodel", it) }
+                    is retrofit2.HttpException->{
+                        Log.i("MainViewModel",e.message())
                     }
-                    else -> {
-                        Log.i("MainViewModel", e.toString())
+                    else ->{
+                        Log.i("MainViewModel",e.toString())
                     }
                 }
             }
@@ -544,6 +547,19 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
 
     init {
         resetQuiz()
+    }
+    var showDeleteTopicDialog = mutableStateOf(false)
+    fun OpenDeleteTopicDialog(){
+
+        showDeleteTopicDialog.value = true
+    }
+
+    fun onDialogDeleteTopicDismiss(){
+        showDeleteTopicDialog.value = false
+    }
+
+    fun onDialogDeleteTopicConfirm(){
+        showDeleteTopicDialog.value = false
     }
     var showDialog = mutableStateOf(false)
     fun OpenDialog(){

@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.ff.funum.data.api.TopicAPI
 import com.ff.funum.ui.screens.LessonsViewModel
 import com.ff.funum.ui.theme.Black
@@ -44,27 +45,28 @@ import com.ff.funum.ui.theme.White
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
-fun UpdateTopicScreen(accion : String, topic: TopicAPI=TopicAPI(id = "",imagen = listOf("")), idLesson:String, viewModel: LessonsViewModel) {
+fun UpdateTopicScreen(accion : String, idLesson:String, viewModel: LessonsViewModel, navController: NavController) {
+    val topic = viewModel.topic
     viewModel.updatedTopic=topic
     Column(modifier = Modifier
         .fillMaxSize()
         .background(LightGreen)) {
-        UpdateTopicComponent(accion,viewModel,idLesson,topic)
+        UpdateTopicComponent(accion,viewModel,idLesson,topic, navController)
     }
 }
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
-fun UpdateTopicComponent(accion: String,viewModel: LessonsViewModel,idLesson: String,topic: TopicAPI){
+fun UpdateTopicComponent(accion: String,viewModel: LessonsViewModel,idLesson: String,topic: TopicAPI, navController: NavController){
 
     Column (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween ){
-        if(accion==="Agregar"){
+        if(accion=="Agregar"){
             TitleTopic(action = "Agregar tema",
                 Modifier
                     .fillMaxWidth()
                     .background(DarkGreen)
                     .weight(0.1f))
-        }else if(accion==="Actualizar"){
+        }else if(accion=="Actualizar"){
             TitleTopic(action = "Actualizar tema",
                 Modifier
                     .fillMaxWidth()
@@ -114,16 +116,20 @@ fun UpdateTopicComponent(accion: String,viewModel: LessonsViewModel,idLesson: St
             Modifier
                 .fillMaxWidth()
                 .weight(0.1f),horizontalArrangement = Arrangement.SpaceAround) {
-            ButtonUpdate(function = { viewModel.updatedTopic= TopicAPI() }, texto = "Cancelar")
-            if(accion==="Agregar"){
+            ButtonUpdate(function = { viewModel.updatedTopic= TopicAPI()
+                navController.navigate(route = Screens.Home.screen)
+                                    }, texto = "Cancelar")
+            if(accion=="Agregar"){
                 ButtonUpdate(function = {
                     viewModel.updatedTopic.id?.let { viewModel.updateTopic(viewModel.updatedTopic, visible = topic.visibility, idTopic = it, idLesson = idLesson) }
                     viewModel.updatedTopic= TopicAPI()
+                    navController.navigate(route = Screens.Home.screen)
                 }, texto = "Agregar")
-            }else if(accion==="Actualizar"){
+            }else if(accion=="Actualizar"){
                 ButtonUpdate(function = {
                     viewModel.updatedTopic.id?.let { viewModel.updateTopic(viewModel.updatedTopic, visible = topic.visibility, idTopic = it, idLesson = idLesson) }
                     viewModel.updatedTopic=TopicAPI()
+                    navController.navigate(route = Screens.Home.screen)
                 }, texto = "Actualizar")
             }
 

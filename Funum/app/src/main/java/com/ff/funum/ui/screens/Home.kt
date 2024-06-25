@@ -105,8 +105,8 @@ fun Home(
 
                     Button(colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),onClick = {
                         viewModel.updatedLesson =
-                            Lessons(id = ""); viewModel.lesson =
-                        Lessons(id = ""); navController.navigate(route = "${Screens.UpdateLesson.screen}/Agregar")
+                            Lessons(id = "", visibility = false); viewModel.lesson =
+                        Lessons(id = "", visibility = false); navController.navigate(route = "${Screens.UpdateLesson.screen}/Agregar")
                     }) {
                         Text(text = "Agregar leccion", fontFamily = Chewy)
                         Icon(

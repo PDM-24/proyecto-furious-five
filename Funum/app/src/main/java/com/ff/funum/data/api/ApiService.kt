@@ -6,11 +6,13 @@ import com.ff.funum.utils.Constants
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface APIService {
     // Select Lessons
@@ -30,7 +32,7 @@ interface APIService {
 
     //Delete topic
     @Headers(value = ["Content-Type: application/json"])
-    @DELETE(value = Constants.API_PATH+Constants.Topic_Path+Constants.Delete_Topic_Path+"{id}")
+    @HTTP(method = "DELETE", path = Constants.API_PATH+Constants.Topic_Path+Constants.Delete_Topic_Path+"{id}", hasBody = true)
     suspend fun deleteTopic(@Body idLesson: DeleteTopic,@Path("id", encoded = false) idTopic:String,@Header("authorization") token:String):ApiResponseSuccessful
 
 

@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -38,6 +40,8 @@ import com.ff.funum.ui.theme.Green2
 import com.ff.funum.ui.theme.GreenTopics
 import com.ff.funum.R
 import com.ff.funum.data.api.Lessons
+import com.ff.funum.data.api.TopicAPI
+import com.ff.funum.ui.theme.DarkGreen
 import com.ff.funum.ui.theme.White
 
 @Composable
@@ -98,7 +102,9 @@ fun LessonCard(
                                         tint = White,
                                         modifier = Modifier
                                             .padding(horizontal = 5.dp)
-                                            .clickable { viewModel.OpenDialog() })
+                                            .clickable {
+                                                viewModel._idLesson= lesson.id.toString()
+                                                viewModel.OpenDialog() })
                                         Icon(painter = painterResource(id = R.drawable.visibility),
                                             contentDescription = "delete lesson",
                                             tint = White,
@@ -118,26 +124,144 @@ fun LessonCard(
                     }
                     if (isExpanded) {
                         Column(modifier = Modifier.background(GreenTopics)) {
+                            if(viewModel.admin) {
+                                Row (Modifier.fillMaxWidth(), Arrangement.Center){
+
+                                    Button(colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),onClick = {
+                                        viewModel.updatedTopic =
+                                            TopicAPI(visibility = false)
+                                        viewModel.topic = TopicAPI(id = "", imagen = listOf(""), visibility = false)
+                                        navController.navigate(route = "${Screens.UpdateTopic.screen}/Agregar/${lesson.id}")
+                                    }) {
+                                        Text(text = "Agregar tema", fontFamily = Chewy)
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.edit),
+                                            contentDescription = "Add tema",
+                                            tint = White
+                                        )
+                                    }
+                                }
+                            }
                             lesson.topicList.forEachIndexed { topicIndex, topicAPI ->
                                 Column(modifier = Modifier.clickable {
                                     viewModel.saveDataFromSelectedTopic(topicAPI)
                                     onClick()
                                     viewModel.beginTopic(lesson.id, topicAPI.id)
                                 }) {
-                                    Text(
-                                        text = "Tema ${topicIndex + 1}",
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(12.dp, 4.dp),
-                                        fontFamily = Chewy,
-                                        fontSize = 28.sp
-                                    )
-                                    Text(
-                                        text = topicAPI.nombre,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(12.dp, 4.dp)
-                                    )
+                                    if (topicAPI.visibility) {
+                                        if (viewModel.admin) {
+                                            Row(
+                                                Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.End
+                                            ) {
+                                                Icon(painter = painterResource(id = R.drawable.edit),
+                                                    contentDescription = "edit topic",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                        .clickable {
+                                                            viewModel.updatedTopic =
+                                                                TopicAPI(); viewModel.topic =
+                                                            topicAPI; navController.navigate(route = "${Screens.UpdateTopic.screen}/${"Actualizar"}/${lesson.id}")
+                                                        })
+                                                Icon(painter = painterResource(id = R.drawable.delete),
+                                                    contentDescription = "delete topic",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                        .clickable {
+                                                            viewModel._idLesson= lesson.id.toString()
+                                                            viewModel._idTopic=topicAPI.id.toString()
+                                                            viewModel.OpenDeleteTopicDialog() })
+                                                Icon(
+                                                    painter = painterResource(id = R.drawable.visibility),
+                                                    contentDescription = "topic visibility",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                )
+
+
+                                            }
+                                        }
+                                        Text(
+                                            text = "Tema ${topicIndex + 1}",
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(12.dp, 4.dp),
+                                            fontFamily = Chewy,
+                                            fontSize = 28.sp
+                                        )
+                                        Text(
+                                            text = topicAPI.nombre,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(12.dp, 4.dp)
+                                        )
+
+                                                DeleteTopicAlertDialog(
+                                                    viewModel = viewModel,
+                                                )
+
+
+                                    }else{
+                                        if (viewModel.admin) {
+                                            Row(
+                                                Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.End
+                                            ) {
+                                                Icon(painter = painterResource(id = R.drawable.edit),
+                                                    contentDescription = "edit topic",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                        .clickable {
+                                                            viewModel.updatedTopic =
+                                                                TopicAPI(); viewModel.topic =
+                                                            topicAPI; navController.navigate(route = "${Screens.UpdateTopic.screen}/${"Actualizar"}/${lesson.id}")
+                                                        })
+                                                Icon(painter = painterResource(id = R.drawable.delete),
+                                                    contentDescription = "delete topic",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                        .clickable {
+                                                            viewModel._idLesson= lesson.id.toString()
+                                                            viewModel._idTopic=topicAPI.id.toString()
+                                                            viewModel.OpenDeleteTopicDialog() })
+                                                Icon(
+                                                    painter = painterResource(id = R.drawable.visibility_off),
+                                                    contentDescription = "topic visibility",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                )
+
+
+                                            }
+                                        }
+                                        Text(
+                                            text = "Tema ${topicIndex + 1}",
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(12.dp, 4.dp),
+                                            fontFamily = Chewy,
+                                            fontSize = 28.sp
+                                        )
+                                        Text(
+                                            text = topicAPI.nombre,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(12.dp, 4.dp)
+                                        )
+                                        lesson.id?.let {
+                                            topicAPI.id?.let { it1 ->
+                                                DeleteTopicAlertDialog(
+                                                    viewModel = viewModel,
+                                                )
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             if (lesson.lessonExamList.isNotEmpty()) {
@@ -163,7 +287,7 @@ fun LessonCard(
                     }
                 }
             }
-            lesson.id?.let { DeleteAlertDialog(viewModel = viewModel, lessonId = it) }
+            lesson.id?.let { DeleteLessonAlertDialog(viewModel = viewModel) }
         }else if(viewModel.admin){
             Card(
                 modifier = Modifier
@@ -212,7 +336,9 @@ fun LessonCard(
                                         tint = White,
                                         modifier = Modifier
                                             .padding(horizontal = 5.dp)
-                                            .clickable { viewModel.OpenDialog() })
+                                            .clickable {
+                                                viewModel._idLesson= lesson.id.toString()
+                                                viewModel.OpenDialog() })
                                     Icon(painter = painterResource(id = R.drawable.visibility_off),
                                         contentDescription = "delete lesson",
                                         tint = White,
@@ -230,26 +356,147 @@ fun LessonCard(
                     }
                     if (isExpanded) {
                         Column(modifier = Modifier.background(GreenTopics)) {
+                            if(viewModel.admin) {
+                                Row (Modifier.fillMaxWidth(), Arrangement.Center){
+
+                                    Button(colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),onClick = {
+                                        viewModel.updatedTopic =
+                                            TopicAPI(visibility = false)
+                                        viewModel.topic = TopicAPI(id = "", imagen = listOf(""), visibility = false)
+                                        navController.navigate(route = "${Screens.UpdateTopic.screen}/Agregar/${lesson.id}")
+                                    }) {
+                                        Text(text = "Agregar tema", fontFamily = Chewy)
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.edit),
+                                            contentDescription = "Add tema",
+                                            tint = White
+                                        )
+                                    }
+                                }
+                            }
                             lesson.topicList.forEachIndexed { topicIndex, topicAPI ->
                                 Column(modifier = Modifier.clickable {
                                     viewModel.saveDataFromSelectedTopic(topicAPI)
                                     onClick()
                                     viewModel.beginTopic(lesson.id, topicAPI.id)
                                 }) {
-                                    Text(
-                                        text = "Tema ${topicIndex + 1}",
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(12.dp, 4.dp),
-                                        fontFamily = Chewy,
-                                        fontSize = 28.sp
-                                    )
-                                    Text(
-                                        text = topicAPI.nombre,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(12.dp, 4.dp)
-                                    )
+                                    if (topicAPI.visibility) {
+                                        if (viewModel.admin) {
+                                            Row(
+                                                Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.End
+                                            ) {
+                                                Icon(painter = painterResource(id = R.drawable.edit),
+                                                    contentDescription = "edit topic",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                        .clickable {
+                                                            viewModel.updatedTopic =
+                                                                TopicAPI(); viewModel.topic =
+                                                            topicAPI; navController.navigate(route = "${Screens.UpdateTopic.screen}/${"Actualizar"}/${lesson.id}")
+                                                        })
+                                                Icon(painter = painterResource(id = R.drawable.delete),
+                                                    contentDescription = "delete topic",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                        .clickable {
+                                                            viewModel._idLesson= lesson.id.toString()
+                                                            viewModel._idTopic=topicAPI.id.toString()
+                                                            viewModel.OpenDeleteTopicDialog() })
+                                                Icon(
+                                                    painter = painterResource(id = R.drawable.visibility),
+                                                    contentDescription = "topic visibility",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                )
+
+
+                                            }
+                                        }
+                                        Text(
+                                            text = "Tema ${topicIndex + 1}",
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(12.dp, 4.dp),
+                                            fontFamily = Chewy,
+                                            fontSize = 28.sp
+                                        )
+                                        Text(
+                                            text = topicAPI.nombre,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(12.dp, 4.dp)
+                                        )
+                                        lesson.id?.let {
+                                            topicAPI.id?.let { it1 ->
+                                                DeleteTopicAlertDialog(
+                                                    viewModel = viewModel,
+
+                                                )
+                                            }
+                                        }
+                                    }else{
+                                        if (viewModel.admin) {
+                                            Row(
+                                                Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.End
+                                            ) {
+                                                Icon(painter = painterResource(id = R.drawable.edit),
+                                                    contentDescription = "edit topic",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                        .clickable {
+                                                            viewModel.updatedTopic =
+                                                                TopicAPI(); viewModel.topic =
+                                                            topicAPI; navController.navigate(route = "${Screens.UpdateTopic.screen}/${"Actualizar"}/${lesson.id}")
+                                                        })
+                                                Icon(painter = painterResource(id = R.drawable.delete),
+                                                    contentDescription = "delete topic",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                        .clickable {
+                                                            viewModel._idLesson= lesson.id.toString()
+                                                            viewModel._idTopic=topicAPI.id.toString()
+                                                            viewModel.OpenDeleteTopicDialog() })
+                                                Icon(
+                                                    painter = painterResource(id = R.drawable.visibility_off),
+                                                    contentDescription = "topic visibility",
+                                                    tint = White,
+                                                    modifier = Modifier
+                                                        .padding(horizontal = 5.dp)
+                                                )
+
+
+                                            }
+                                        }
+                                        Text(
+                                            text = "Tema ${topicIndex + 1}",
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(12.dp, 4.dp),
+                                            fontFamily = Chewy,
+                                            fontSize = 28.sp
+                                        )
+                                        Text(
+                                            text = topicAPI.nombre,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(12.dp, 4.dp)
+                                        )
+                                        lesson.id?.let {
+                                            topicAPI.id?.let { it1 ->
+                                                DeleteTopicAlertDialog(
+                                                    viewModel = viewModel,
+
+                                                )
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             if (lesson.lessonExamList.isNotEmpty()) {
@@ -275,13 +522,13 @@ fun LessonCard(
                     }
                 }
             }
-            lesson.id?.let { DeleteAlertDialog(viewModel = viewModel, lessonId = it) }
+            lesson.id?.let { DeleteLessonAlertDialog(viewModel = viewModel) }
         }
     }
 }
 @Composable
-fun DeleteAlertDialog(
-    viewModel: LessonsViewModel, lessonId:String
+fun DeleteLessonAlertDialog(
+    viewModel: LessonsViewModel
 ) {
     if (viewModel.showDialog.value) {
 
@@ -291,7 +538,7 @@ fun DeleteAlertDialog(
                 val context = LocalContext.current
 
                 TextButton(onClick =  { viewModel.onDialogConfirm()
-                    viewModel.deleteLesson(lessonId)
+                    viewModel.deleteLesson(viewModel._idLesson)
 
                 } ) {
                     Text(text = "Ok")
@@ -304,6 +551,37 @@ fun DeleteAlertDialog(
             },
             title = { Text(text = "Eliminar leccion") },
             text = { Text(text = "Esta seguro de que quiere eliminar la leccion") },
+
+            )
+    }
+}
+
+@Composable
+fun DeleteTopicAlertDialog(
+    viewModel: LessonsViewModel
+) {
+    if (viewModel.showDeleteTopicDialog.value) {
+
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = {viewModel.onDialogDeleteTopicDismiss() },
+            confirmButton = {
+                val context = LocalContext.current
+
+                TextButton(onClick =  {
+                    viewModel.onDialogDeleteTopicConfirm()
+                    viewModel.deleteTopic(idTopic = viewModel._idTopic, viewModel._idLesson)
+
+                } ) {
+                    Text(text = "Ok")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick =  {viewModel.onDialogDeleteTopicDismiss() } ) {
+                    Text(text = "Cancelar")
+                }
+            },
+            title = { Text(text = "Eliminar tema") },
+            text = { Text(text = "Esta seguro de que quiere eliminar el tema") },
 
             )
     }

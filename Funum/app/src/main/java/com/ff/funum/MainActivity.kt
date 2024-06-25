@@ -41,6 +41,7 @@ import com.ff.funum.ui.screens.Screens
 import com.ff.funum.ui.screens.Shop
 import com.ff.funum.ui.screens.TopicsScreen
 import com.ff.funum.ui.screens.UpdateLessonScreen
+import com.ff.funum.ui.screens.UpdateTopicScreen
 import com.ff.funum.ui.theme.DarkGreen
 import com.ff.funum.ui.theme.FunumTheme
 
@@ -168,6 +169,20 @@ fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, pr
             ){ backStackEntry ->
                 backStackEntry.arguments?.getString("accion")
                     ?.let { UpdateLessonScreen(viewModel = viewModel, accion = it, navController = navController) }
+            }
+            composable(
+                route = "${Screens.UpdateTopic.screen}/{accion}/{idLesson}",
+                arguments = listOf(
+                    navArgument("accion"){
+                        type = NavType.StringType
+                    } ,
+                    navArgument("idLesson"){
+                        type = NavType.StringType
+                    }
+                )
+            ){ backStackEntry ->
+                backStackEntry.arguments?.getString("accion")
+                    ?.let { UpdateTopicScreen(viewModel = viewModel, accion = it, navController = navController, idLesson = backStackEntry.arguments!!.getString("idLesson")!!) }
             }
             composable(
                 route = "${Screens.Quiz.screen}/{examId}",
