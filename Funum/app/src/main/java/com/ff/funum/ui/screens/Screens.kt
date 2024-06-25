@@ -10,4 +10,6 @@ sealed class Screens (val screen: String){
     data object Topic: Screens("topic")
     data object UpdateLesson: Screens("updatelesson")
     data object UpdateTopic: Screens("updatetopic")
+    data object CreateQuiz: Screens("saveExam")
+
 }

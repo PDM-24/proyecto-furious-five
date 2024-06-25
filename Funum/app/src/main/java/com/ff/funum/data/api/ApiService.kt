@@ -131,4 +131,19 @@ interface APIService {
         @Header("Authorization") token: String,
         @Path("id") topicId: String?
     ): BeginEndLessonResponse
+
+    @Headers(
+        value = ["Content-Type: application/json"]
+    )
+    @GET(value = "${Constants.API_PATH}${Constants.AUTH_PATH}${Constants.AUTH_RANKING_PATH}")
+    suspend fun getRanking(
+        @Header("Authorization") token: String
+    ): RankingRespose
+
+    @Headers(value = ["Content-Type: application/json"])
+    @POST(value = Constants.API_PATH+Constants.EXAM_ROUTE+Constants.SAVE_EXAM_PATH)
+    suspend fun saveExam(
+        @Body adminSaveExam: AdminSaveExam,
+        @Header("authorization") token:String
+    ): ExamApi
 }
