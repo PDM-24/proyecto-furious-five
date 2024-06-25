@@ -47,13 +47,13 @@ data class Pregunta_opcion_multiple_Api(
     val imagen: String = "",
 
     @SerializedName(value = Constants.PREGUNTA_OPCION_MULTIPLE_ENUNCIADO)
-    val enunciado: String,
+    val enunciado: String= "",
 
     @SerializedName(value = Constants.PREGUNTA_OPCION_MULTIPLE_TEMA)
-    val tema: TemaApi,
+    val tema: TemaApi = TemaApi("",""),
 
     @SerializedName(value = Constants.PREGUNTA_OPCION_MULTIPLE_RESPUESTA)
-    val respuestas: MutableList<Respuesta_opcion_multiple_api>
+    val respuestas: MutableList<Respuesta_opcion_multiple_api> = arrayListOf()
 )
 
 data class Respuesta_opcion_multiple_api(
@@ -61,7 +61,7 @@ data class Respuesta_opcion_multiple_api(
     val id: String = "",
 
     @SerializedName(value = Constants.RESPUESTA_OPCION_MULTIPLE_DESCRIPCION)
-    val descripcion: String,
+    val descripcion: String="",
 
     @SerializedName(value = Constants.RESPUESTA_OPCION_MULTIPLE_CORRECTA)
     val correcta: Boolean,
