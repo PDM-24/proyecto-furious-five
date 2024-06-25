@@ -6,7 +6,7 @@ object Constants {
 
 
 
-    const val BASE_URL = "http://192.168.1.2:3500"
+    const val BASE_URL = "http://192.168.1.9:3500"
 
 
 

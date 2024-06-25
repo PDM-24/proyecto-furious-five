@@ -141,7 +141,7 @@ fun LessonCard(
                                         )
                                     }
                                     Button(colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),onClick = {
-
+                                        navController.navigate(route = "${Screens.CreateQuiz.screen}/${lesson.id}")
                                     }) {
                                         Text(text = "Agregar examen", fontFamily = Chewy)
                                         Icon(
@@ -414,7 +414,7 @@ fun LessonCard(
                                         )
                                     }
                                     Button(colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),onClick = {
-
+                                        navController.navigate(route = "${Screens.CreateQuiz.screen}/${lesson.id}")
                                     }) {
                                         Text(text = "Agregar examen", fontFamily = Chewy)
                                         Icon(
