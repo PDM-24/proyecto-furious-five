@@ -31,6 +31,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ff.funum.screens.Config
+import com.ff.funum.ui.screens.AdminExam.SaveExamScreen
 import com.ff.funum.ui.screens.Home
 import com.ff.funum.ui.screens.LessonsViewModel
 import com.ff.funum.ui.screens.Profile
@@ -158,6 +159,16 @@ fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, pr
             }
 
             composable(Screens.Topic.screen) { TopicsScreen(viewModel, navController = navController) }
+            composable(
+                route = "${Screens.CreateQuiz.screen}/{leccionId}",
+                arguments = listOf(
+                    navArgument("leccionId"){
+                        type = NavType.StringType
+                    }
+                )
+            ){ backStackEntry ->
+                SaveExamScreen(navController = navController, leccionId = backStackEntry.arguments?.getString("leccionId"), viewModel = viewModel)
+            }
 
         }
 

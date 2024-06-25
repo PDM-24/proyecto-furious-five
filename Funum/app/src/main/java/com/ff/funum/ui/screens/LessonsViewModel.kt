@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.datastore.dataStore
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.ff.funum.data.api.AdminSaveExam
 import com.ff.funum.data.api.ApiClient
 import com.ff.funum.data.api.DeleteTopic
 import com.ff.funum.data.api.EndExamBody
@@ -512,6 +513,39 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
                 Log.i("Rankingaaa", e.toString())
             }
         }
+    }
+
+    fun saveExam(newExam: AdminSaveExam, tema: String, temas: MutableList<TopicAPI>){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val _tema = temas.find { it.nombre == tema }
+                if (_tema != null) {
+                    if(_tema.id != null){
+                        _uiState.value = UiState.Loading
+                        val _newExam = newExam.copy(temaId = _tema.id)
+                        val token = repository.getToken()
+                        if(token != null){
+                            api.saveExam(adminSaveExam = _newExam,token = "Bearer $token")
+                        }
+                        setStateToReady()
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(e.toString())
+                Log.i("Rankingaaa", e.toString())
+            }
+        }
+    }
+
+    fun getLessonTopics(lessonId: String?): MutableList<TopicAPI>{
+        listLessons.forEach {
+            it.leccion.forEach {
+                if(it.id == lessonId){
+                    return it.topicList
+                }
+            }
+        }
+        return arrayListOf()
     }
 
     fun setStateToReady() {

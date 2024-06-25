@@ -69,6 +69,15 @@ object Constants {
     // Finish Exam
     const val FINISH_EXAM = "/end"
 
+    const val SAVE_EXAM_PATH = "/6562d5f446fa0e9cba08a733"
+
+    const val SAVE_EXAM_NOMBRE = "nombre"
+    const val SAVE_EXAM_DESCRIPCION = "descripcion"
+    const val SAVE_EXAM_PONDERACION = "ponderacion"
+    const val SAVE_EXAM_TIPO = "tipo"
+    const val SAVE_EXAM_TEMAID = "temaId"
+    const val SAVE_EXAM_IDLECCION = "idLeccion"
+
     const val EXAM_ID = "_id"
     const val EXAM_VISIBILIDAD = "visibilidad"
     const val EXAM_TEMAS = "temas"
