@@ -49,21 +49,16 @@ class AvatarViewModel(application: Application) : AndroidViewModel(application) 
     fun buyAvatar(imagen: String, costo: Int, onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
             try {
-                val success = repository.buyAvatar(imagen, costo)
-                if (success) {
-                    onSuccess()
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(getApplication(), "Avatar comprado correctamente", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    onError("Error al comprar avatar")
+                repository.buyAvatar(imagen, costo)
+                onSuccess()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(getApplication(), "Avatar comprado correctamente", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 onError(e.message ?: "Error al comprar avatar")
             }
         }
     }
-
 
 }
 

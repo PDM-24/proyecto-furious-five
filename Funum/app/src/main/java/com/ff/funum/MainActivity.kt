@@ -154,7 +154,7 @@ fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, pr
             composable(Screens.Ranking.screen){ Ranking(viewModel)}
             composable(Screens.Profile.screen){ Profile(navController = navController, profileViewModel = profileViewModel)}
 
-            composable(Screens.Config.screen){ Config(navController = navController)}
+            composable(Screens.Config.screen){ Config(navController = navController, profileViewModel = profileViewModel)}
             composable(
                 route = "${Screens.Quiz.screen}/{examId}",
                 arguments = listOf(

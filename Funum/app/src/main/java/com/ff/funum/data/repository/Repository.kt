@@ -5,6 +5,7 @@ import android.util.Log
 import com.ff.funum.data.api.ApiClient
 import com.ff.funum.data.api.ApiClient.apiService
 import com.ff.funum.data.api.BuyAvatarRequest
+import com.ff.funum.data.api.ChangeAvatarRequest
 import com.ff.funum.data.api.LessonAPI
 import com.ff.funum.data.local.datastore.DataStore
 import com.ff.funum.model.Avatar
@@ -71,20 +72,34 @@ class Repository(private val context: Context) {
         }
     }
 
-    suspend fun buyAvatar(imagen: String, costo: Int): Boolean {
+    suspend fun buyAvatar(imagen: String, costo: Int) {
         val token = getToken() ?: throw IllegalStateException("Token no disponible")
         Log.d("Repository", "Comprando avatar con imagen: $imagen, costo: $costo")
 
         try {
             val request = BuyAvatarRequest(imagen, costo)
-            val response = api.buyAvatar(request, "Bearer $token")
-            Log.d("Repository", "Compra de avatar exitosa: $response")
-            return true
+            api.buyAvatar(request, "Bearer $token")
+            Log.d("Repository", "Compra de avatar exitosa")
         } catch (e: Exception) {
             Log.e("Repository", "Error al comprar avatar", e)
             throw e
         }
     }
+
+    suspend fun changeAvatar(imagen: String){
+        val token = getToken() ?: throw IllegalStateException("Token no disponible")
+        Log.d("Repository", "Cambiando avatar con imagen: $imagen")
+
+        try {
+            val request = ChangeAvatarRequest(imagen)
+            api.changeAvatar(request, "Bearer $token")
+            Log.d("Repository", "Compra de avatar exitosa")
+        } catch (e: Exception) {
+            Log.e("Repository", "Error al comprar avatar", e)
+            throw e
+        }
+    }
+
 
 
 

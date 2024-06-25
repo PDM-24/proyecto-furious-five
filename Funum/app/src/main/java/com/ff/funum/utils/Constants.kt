@@ -12,6 +12,7 @@ object Constants {
     const val WHOAMI_PATH = "/whoami"
     const val AVATAR_PATH = "/avatar"
     const val BUYAVATAR_PATH = "/buyAvatar"
+    const val CHANGEAVATAR_PATH = "/changeAvatar"
 
     const val LESSON_PATH = "/lesson"
 

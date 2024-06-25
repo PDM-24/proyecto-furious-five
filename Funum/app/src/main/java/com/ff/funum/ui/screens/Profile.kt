@@ -60,6 +60,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberImagePainter
 import com.ff.funum.model.User
 
 
@@ -68,6 +69,10 @@ import com.ff.funum.model.User
 fun Profile(navController: NavController, profileViewModel: ProfileViewModel = viewModel()){
 
     val username by profileViewModel.username.collectAsState()
+    val completedLessons by profileViewModel.completedLessons.collectAsState()
+    val totalLessons by profileViewModel.totalLessons.collectAsState()
+    val availableAvatars by profileViewModel.availableAvatars.collectAsState()
+    val currentAvatar by profileViewModel.currentAvatar.collectAsState()
 
     LaunchedEffect(Unit) {
         profileViewModel.fetchUsername()
@@ -92,7 +97,7 @@ fun Profile(navController: NavController, profileViewModel: ProfileViewModel = v
                 modifier = Modifier.fillMaxSize()
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.avatar3),
+                    painter =  rememberImagePainter(currentAvatar.ifEmpty { R.drawable.avatar3 }),
                     contentDescription = null,
                     modifier = Modifier
                         .size(220.dp)
@@ -117,7 +122,7 @@ fun Profile(navController: NavController, profileViewModel: ProfileViewModel = v
         }
 
         StatisticsSection(username)
-        UnlockedAvatarsSection()
+        UnlockedAvatarsSection(availableAvatars)
     }
 }
 
@@ -174,7 +179,7 @@ fun StatisticsSection(username: String?) {
 }
 
 @Composable
-fun UnlockedAvatarsSection() {
+fun UnlockedAvatarsSection(availableAvatars: Array<String>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -192,21 +197,16 @@ fun UnlockedAvatarsSection() {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row {
-            Image(
-                painter = painterResource(id = R.drawable.avatar1),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Image(
-                painter = painterResource(id = R.drawable.avatar2),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape)
-            )
+            availableAvatars.forEach { avatar ->
+                Image(
+                    painter = rememberImagePainter(avatar),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(CircleShape)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+            }
         }
     }
 }
