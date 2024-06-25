@@ -109,7 +109,7 @@ fun Home(
                             Lessons(id = "", visibility = false); viewModel.lesson =
                         Lessons(id = "", visibility = false); navController.navigate(route = "${Screens.UpdateLesson.screen}/Agregar")
                     }) {
-                        Text(text = "Agregar leccion", fontFamily = Chewy)
+                        Text(text = "Agregar leccion", fontFamily = Chewy, color = White)
                         Icon(
                             painter = painterResource(id = R.drawable.edit),
                             contentDescription = "edit lesson",

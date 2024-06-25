@@ -133,7 +133,7 @@ fun LessonCard(
                                         viewModel.topic = TopicAPI(id = "", imagen = listOf(""), visibility = false)
                                         navController.navigate(route = "${Screens.UpdateTopic.screen}/Agregar/${lesson.id}")
                                     }) {
-                                        Text(text = "Agregar tema", fontFamily = Chewy)
+                                        Text(text = "Agregar tema", fontFamily = Chewy, color = White)
                                         Icon(
                                             painter = painterResource(id = R.drawable.edit),
                                             contentDescription = "Add tema",
@@ -143,7 +143,7 @@ fun LessonCard(
                                     Button(colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),onClick = {
                                         navController.navigate(route = "${Screens.CreateQuiz.screen}/${lesson.id}")
                                     }) {
-                                        Text(text = "Agregar examen", fontFamily = Chewy)
+                                        Text(text = "Agregar examen", fontFamily = Chewy, color = White)
                                         Icon(
                                             painter = painterResource(id = R.drawable.edit),
                                             contentDescription = "Add examen",
@@ -416,7 +416,7 @@ fun LessonCard(
                                     Button(colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),onClick = {
                                         navController.navigate(route = "${Screens.CreateQuiz.screen}/${lesson.id}")
                                     }) {
-                                        Text(text = "Agregar examen", fontFamily = Chewy)
+                                        Text(text = "Agregar examen", fontFamily = Chewy, color = White)
                                         Icon(
                                             painter = painterResource(id = R.drawable.edit),
                                             contentDescription = "Add examen",
