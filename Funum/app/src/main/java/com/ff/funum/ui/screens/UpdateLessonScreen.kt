@@ -34,10 +34,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.ff.funum.data.api.Lessons
 import com.ff.funum.data.api.TopicAPI
+import com.ff.funum.data.listLessons
 import com.ff.funum.ui.screens.LessonsViewModel
 import com.ff.funum.ui.theme.Black
 import com.ff.funum.ui.theme.DarkGreen
@@ -49,27 +52,27 @@ import com.ff.funum.ui.theme.White
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
-fun UpdateLessonScreen(accion : String, lesson: Lessons=Lessons(id = ""), viewModel: LessonsViewModel) {
+fun UpdateLessonScreen(accion : String, viewModel: LessonsViewModel, navController: NavController,) {
+    val lesson = viewModel.lesson
     viewModel.updatedLesson=lesson
     Column(modifier = Modifier
         .fillMaxSize()
         .background(LightGreen)) {
-        UpdateLessonComponent(accion,viewModel,lesson)
+        UpdateLessonComponent(accion,viewModel,lesson, navController)
     }
 }
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
-fun UpdateLessonComponent(accion: String,viewModel: LessonsViewModel,lesson: Lessons){
-
+fun UpdateLessonComponent(accion: String,viewModel: LessonsViewModel,lesson: Lessons, navController: NavController){
     Column (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween ){
-        if(accion==="Agregar"){
+        if(accion=="Agregar"){
             TitleLesson(action = "Agregar leccion",
                 Modifier
                     .fillMaxWidth()
                     .background(DarkGreen)
                     .weight(0.1f))
-        }else if(accion==="Actualizar"){
+        }else if(accion=="Actualizar"){
             TitleLesson(action = "Actualizar leccion",
                 Modifier
                     .fillMaxWidth()
@@ -112,20 +115,25 @@ fun UpdateLessonComponent(accion: String,viewModel: LessonsViewModel,lesson: Les
             Modifier
                 .fillMaxWidth()
                 .weight(0.1f),horizontalArrangement = Arrangement.SpaceAround) {
-            ButtonUpdate(function = { viewModel.updatedLesson= Lessons() }, texto = "Cancelar")
-            if(accion==="Agregar"){
+            ButtonUpdate(function = {
+                viewModel.updatedLesson= Lessons()
+                navController.navigate(route = Screens.Home.screen)
+                                    }, texto = "Cancelar")
+            if(accion=="Agregar"){
                 ButtonUpdateLesson(function = {
                     viewModel.updatedLesson.id?.let {
-                        viewModel.updateLesson(viewModel.updatedLesson, it, visible = lesson.visibility, token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MjAwNTk0OTcsImlhdCI6MTcxODc2MzQ5N30.naDizD10OnRke-z39Qjp-L0eXEHsiOhGpQ2FQpJx0ns")
+                        viewModel.updateLesson(viewModel.updatedLesson, it, visible = lesson.visibility)
                     }
                     viewModel.updatedLesson= Lessons()
+                    navController.navigate(route = Screens.Home.screen)
                 }, texto = "Agregar")
-            }else if(accion==="Actualizar"){
+            }else if(accion=="Actualizar"){
                 ButtonUpdateLesson(function = {
                     viewModel.updatedLesson.id?.let {
-                        viewModel.updateLesson(viewModel.updatedLesson, it,visible = lesson.visibility,token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTZhOTI1YWY0N2ZjMTI3YjkxMzI5YjUiLCJleHAiOjE3MjAwNTk0OTcsImlhdCI6MTcxODc2MzQ5N30.naDizD10OnRke-z39Qjp-L0eXEHsiOhGpQ2FQpJx0ns")
+                        viewModel.updateLesson(viewModel.updatedLesson, it,visible = lesson.visibility)
                     }
                     viewModel.updatedLesson= Lessons()
+                    navController.navigate(route = Screens.Home.screen)
                 }, texto = "Actualizar")
             }
 

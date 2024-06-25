@@ -8,5 +8,8 @@ sealed class Screens (val screen: String){
     data object Config: Screens("config")
     data object Quiz: Screens("quiz")
     data object Topic: Screens("topic")
+    data object UpdateLesson: Screens("updatelesson")
+    data object UpdateTopic: Screens("updatetopic")
     data object CreateQuiz: Screens("saveExam")
+
 }
