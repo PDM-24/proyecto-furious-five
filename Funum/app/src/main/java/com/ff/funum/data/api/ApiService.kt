@@ -1,5 +1,7 @@
 package com.ff.funum.data.api
 
+import com.ff.funum.model.Avatar
+import com.ff.funum.model.AvatarsResponse
 import com.ff.funum.model.LoginData
 import com.ff.funum.model.User
 import com.ff.funum.utils.Constants
@@ -10,6 +12,7 @@ import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface APIService {
     // Select Lessons
@@ -86,10 +89,37 @@ interface APIService {
     @POST(value = Constants.API_PATH + Constants.AUTH_PATH + Constants.LOGIN_PATH)
     suspend fun loginUser(@Body data: LoginData) : LoginResponse
 
-    // Obtener datos del usuario
+    // Get User
     @Headers(value = ["Content-type: application/json"])
     @GET(value = Constants.API_PATH + Constants.AUTH_PATH + Constants.WHOAMI_PATH)
     suspend fun getUser(@Header("Authorization") token: String): User
+
+    //Get Avatar
+    @Headers(value = ["Content-Type: application/json"])
+    @GET(value = Constants.API_PATH + Constants.AVATAR_PATH)
+    suspend fun getAllAvatars(@Header("Authorization") token: String): AvatarsResponse
+    //Add Avatar
+    @Headers(value = ["Content-Type: application/json"])
+    @POST(value = Constants.API_PATH + Constants.AVATAR_PATH)
+    suspend fun addAvatar(
+        @Body avatar: Avatar,
+        @Header("Authorization") token: String
+    ): Avatar
+
+//    @Headers("Content-Type: application/json")
+//    @PATCH(Constants.API_PATH + Constants.AUTH_PATH + Constants.BUYAVATAR_PATH)
+//    suspend fun buyAvatar(
+//        @Body avatar: Avatar,
+//        @Header("Authorization") token: String
+//    )
+@Headers(value = ["Content-Type: application/json"])
+@PATCH(Constants.API_PATH + Constants.AUTH_PATH + Constants.BUYAVATAR_PATH)
+suspend fun buyAvatar(
+    @Body request: BuyAvatarRequest,
+    @Header("Authorization") token: String
+): Boolean
+
+
 
     // Begin Topic
     @Headers(

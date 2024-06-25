@@ -21,8 +21,11 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     private val _username = MutableStateFlow<String>("Cargando...")
     private val _points = MutableStateFlow<Int?>(null)
+    private val _roles = MutableStateFlow<Array<String>>(arrayOf())
+
     val points: StateFlow<Int?> get() = _points
     val username: StateFlow<String> get() = _username
+    val roles: StateFlow<Array<String>> get() = _roles
 
     fun fetchUsername() {
         viewModelScope.launch {
@@ -30,6 +33,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                 val user = repository.getUser()
                 _username.value = user.nombre ?: "Nombre no disponible"
                 _points.value = user.puntos_canjeables
+                _roles.value = user.roles
                 Log.d("ProfileViewModel", "Usuario obtenido: ${user.nombre}")
             } catch (e: Exception) {
                 _username.value = "Error al cargar"

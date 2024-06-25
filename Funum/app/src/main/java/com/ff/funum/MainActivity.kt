@@ -31,6 +31,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ff.funum.screens.Config
+import com.ff.funum.ui.screens.AddAvatar
+import com.ff.funum.ui.screens.AvatarViewModel
 import com.ff.funum.ui.screens.Home
 import com.ff.funum.ui.screens.LessonsViewModel
 import com.ff.funum.ui.screens.Profile
@@ -49,6 +51,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val viewModel : LessonsViewModel by viewModels()
         val profileViewModel: ProfileViewModel by viewModels()
+        val avatarViewModel: AvatarViewModel by viewModels()
         setContent {
             FunumTheme {
                 // A surface container using the 'background' color from the theme
@@ -58,7 +61,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
 
-                    MyBottomAppBar(navController = navController, viewModel = viewModel, profileViewModel = profileViewModel)
+                    MyBottomAppBar(navController = navController, viewModel = viewModel, profileViewModel = profileViewModel, avatarViewModel = avatarViewModel)
                 }
             }
         }
@@ -66,7 +69,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, profileViewModel: ProfileViewModel){
+fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, profileViewModel: ProfileViewModel, avatarViewModel: AvatarViewModel){
     val navController = rememberNavController()
     val context = LocalContext.current.applicationContext
     val selected = remember {
@@ -142,7 +145,8 @@ fun MyBottomAppBar(navController: NavController, viewModel: LessonsViewModel, pr
 
             composable(Screens.Home.screen){ Home(viewModel, profileViewModel = profileViewModel, onClick = {navController.navigate(Screens.Topic.screen)}, navController = navController)}
             composable(Screens.Ranking.screen){ Ranking()}
-            composable(Screens.Shop.screen){ Shop(profileViewModel = profileViewModel)}
+            composable(Screens.Shop.screen){ Shop(navController = navController, profileViewModel = profileViewModel, avatarViewModel = avatarViewModel)}
+            composable(Screens.AddAvatar.screen) { AddAvatar(navController = navController, avatarViewModel = avatarViewModel) }
             composable(Screens.Profile.screen){ Profile(navController = navController, profileViewModel = profileViewModel)}
 
             composable(Screens.Config.screen){ Config(navController = navController)}

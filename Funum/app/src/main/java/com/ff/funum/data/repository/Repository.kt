@@ -4,9 +4,12 @@ import android.content.Context
 import android.util.Log
 import com.ff.funum.data.api.ApiClient
 import com.ff.funum.data.api.ApiClient.apiService
+import com.ff.funum.data.api.BuyAvatarRequest
 import com.ff.funum.data.api.LessonAPI
 import com.ff.funum.data.local.datastore.DataStore
+import com.ff.funum.model.Avatar
 import com.ff.funum.model.User
+import com.ff.funum.utils.Constants
 import kotlinx.coroutines.flow.Flow
 
 class Repository(private val context: Context) {
@@ -41,4 +44,53 @@ class Repository(private val context: Context) {
         return user
     }
 
+    suspend fun fetchAvatars(): List<Avatar> {
+        val token = getToken() ?: throw IllegalStateException("Token no disponible")
+        Log.d("Repository", "Obteniendo avatares con token: $token")
+
+        try {
+            val response = api.getAllAvatars("Bearer $token")
+            Log.d("Repository", "Avatares obtenidos correctamente: ${response.avatar}")
+            return response.avatar
+        } catch (e: Exception) {
+            Log.e("Repository", "Error al obtener avatares", e)
+            throw e
+        }
+    }
+    suspend fun addAvatar(avatar: Avatar): Avatar {
+        val token = getToken() ?: throw IllegalStateException("Token no disponible")
+        Log.d("Repository", "Añadiendo avatar con nombre: ${avatar.nombre}, imagen: ${avatar.imagen}, costo: ${avatar.costo}")
+        Log.d("Repository", "URL de compra de avatar: ${Constants.API_PATH + Constants.AVATAR_PATH + Constants.BUYAVATAR_PATH}")
+        try {
+            val addedAvatar = api.addAvatar(avatar, "Bearer $token") // Pasar el token como cabecera
+            Log.d("Repository", "Avatar añadido correctamente: $addedAvatar")
+            return addedAvatar
+        } catch (e: Exception) {
+            Log.e("Repository", "Error al añadir avatar", e)
+            throw e
+        }
+    }
+
+    suspend fun buyAvatar(imagen: String, costo: Int): Boolean {
+        val token = getToken() ?: throw IllegalStateException("Token no disponible")
+        Log.d("Repository", "Comprando avatar con imagen: $imagen, costo: $costo")
+
+        try {
+            val request = BuyAvatarRequest(imagen, costo)
+            val response = api.buyAvatar(request, "Bearer $token")
+            Log.d("Repository", "Compra de avatar exitosa: $response")
+            return true
+        } catch (e: Exception) {
+            Log.e("Repository", "Error al comprar avatar", e)
+            throw e
+        }
+    }
+
+
+
+
+
 }
+
+
+
