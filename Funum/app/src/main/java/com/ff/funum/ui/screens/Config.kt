@@ -19,8 +19,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.ff.funum.R
+import com.ff.funum.ui.screens.ProfileViewModel
 import com.ff.funum.ui.screens.Screens
 import com.ff.funum.ui.theme.Chewy
 import com.ff.funum.ui.theme.DarkGreen
@@ -31,8 +34,10 @@ import com.ff.funum.ui.theme.White
 
 
 @Composable
-fun Config(navController: NavController) {
-    var selectedAvatar by remember { mutableStateOf<Int?>(null) }
+fun Config(navController: NavController, profileViewModel: ProfileViewModel = viewModel()) {
+    val availableAvatars by profileViewModel.availableAvatars.collectAsState()
+    val currentAvatar by profileViewModel.currentAvatar.collectAsState()
+    var selectedAvatar by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
@@ -54,6 +59,7 @@ fun Config(navController: NavController) {
         )
 
         AvatarGrid(
+            avatars = availableAvatars,
             selectedAvatar = selectedAvatar,
             onAvatarSelected = { selectedAvatar = it }
         )
@@ -62,7 +68,10 @@ fun Config(navController: NavController) {
 
         Button(
             onClick = {
-                navController.navigate(Screens.Profile.screen)
+                selectedAvatar?.let {
+                    profileViewModel.changeAvatar(it)
+                    navController.navigate(Screens.Profile.screen)
+                }
             },
             colors = ButtonDefaults.buttonColors(containerColor = Green)
         ) {
@@ -80,19 +89,10 @@ fun Config(navController: NavController) {
 }
 
 @Composable
-fun AvatarGrid(selectedAvatar: Int?, onAvatarSelected: (Int) -> Unit) {
-    val avatars = listOf(
-        R.drawable.avatar1,
-        R.drawable.avatar2,
-        R.drawable.avatar3,
-        R.drawable.avatar4,
-        R.drawable.avatar5,
-        R.drawable.avatar6,
-        R.drawable.avatar7,
-    )
-
+fun AvatarGrid(avatars: Array<String>, selectedAvatar: String?, onAvatarSelected: (String) -> Unit) {
     Column {
-        for (row in avatars.chunked(4)) {
+        val avatarList = avatars.toList()
+        for (row in avatarList.chunked(4)) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
@@ -101,7 +101,7 @@ fun AvatarGrid(selectedAvatar: Int?, onAvatarSelected: (Int) -> Unit) {
             ) {
                 for (avatar in row) {
                     AvatarItem(
-                        avatarResId = avatar,
+                        avatarUrl = avatar,
                         isSelected = avatar == selectedAvatar,
                         onClick = { onAvatarSelected(avatar) }
                     )
@@ -112,16 +112,17 @@ fun AvatarGrid(selectedAvatar: Int?, onAvatarSelected: (Int) -> Unit) {
 }
 
 @Composable
-fun AvatarItem(avatarResId: Int, isSelected: Boolean, onClick: () -> Unit) {
+fun AvatarItem(avatarUrl: String, isSelected: Boolean, onClick: () -> Unit) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(80.dp)
             .clip(CircleShape)
+            .background(if (isSelected) LightGray else Color.Transparent)
             .clickable { onClick() }
     ) {
         Image(
-            painter = painterResource(id = avatarResId),
+            painter = rememberImagePainter(avatarUrl),
             contentDescription = null,
             modifier = Modifier.size(70.dp)
         )

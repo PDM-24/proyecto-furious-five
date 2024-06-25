@@ -53,6 +53,7 @@ fun Home(
         }
     }
     val points by profileViewModel.points.collectAsState()
+    val completedLessons by profileViewModel.completedLessons.collectAsState()
 
     LaunchedEffect(Unit) {
         profileViewModel.fetchUsername()
@@ -81,7 +82,7 @@ fun Home(
                         contentDescription = "Lecciones",
                         Modifier.size(30.dp)
                     )
-                    Text(text = "0", Modifier.padding(10.dp))
+                    Text(text = completedLessons?.toString() ?: "Cargando...", Modifier.padding(10.dp))
                     Image(
                         painter = painterResource(id = R.drawable.picoin),
                         contentDescription = "PIcoins",

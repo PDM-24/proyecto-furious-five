@@ -119,7 +119,14 @@ interface APIService {
 suspend fun buyAvatar(
     @Body request: BuyAvatarRequest,
     @Header("Authorization") token: String
-): Boolean
+)
+
+@Headers(value = ["Content-Type: application/json"])
+@PATCH(Constants.API_PATH + Constants.AUTH_PATH + Constants.CHANGEAVATAR_PATH)
+suspend fun changeAvatar(
+    @Body request: ChangeAvatarRequest,
+    @Header("Authorization") token: String
+)
 
 
 
