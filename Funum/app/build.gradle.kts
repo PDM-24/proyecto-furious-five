@@ -41,6 +41,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
+      
     }
     packaging {
         resources {
@@ -49,8 +50,24 @@ android {
     }
 }
 
-dependencies {
 
+
+dependencies {
+    implementation(libs.androidx.runtime.livedata)
+    val retrofit_version = "2.11.0"
+    // Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:$retrofit_version")
+    implementation ("com.squareup.retrofit2:converter-gson:$retrofit_version")
+
+    // Datastore
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    // Coil
+    implementation(libs.coil.compose)
+
+    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
+
+   // implementation("androidx.compose.ui:ui-text-google-fonts:1.6.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -59,6 +76,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.ui.test.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,4 +85,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
 }

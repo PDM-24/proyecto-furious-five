@@ -5,11 +5,28 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.ff.funum.R
+
+val ChewyFont = FontFamily(
+    androidx.compose.ui.text.font.Font(R.font.chewy_regular)
+)
+
+val FontChewy = TextStyle(
+    fontFamily = ChewyFont
+)
+
+val ChilankaFont = FontFamily(
+    androidx.compose.ui.text.font.Font(R.font.chilanka_regular)
+)
+
+val FontChilanka = TextStyle(
+    fontFamily = ChilankaFont
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = ChilankaFont,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,

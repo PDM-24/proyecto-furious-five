@@ -14,11 +14,23 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import com.ff.funum.R
+
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80
+)
+
+val Chewy = FontFamily(
+    Font(R.font.chewy)
+)
+
+val Chilanka = FontFamily(
+    Font(R.font.chilanka)
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -41,7 +53,7 @@ private val LightColorScheme = lightColorScheme(
 fun FunumTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
