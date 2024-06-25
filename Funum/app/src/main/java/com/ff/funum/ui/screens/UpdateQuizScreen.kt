@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.ff.funum.data.api.Lessons
 import com.ff.funum.data.api.Pregunta_opcion_multiple_Api
 import com.ff.funum.data.api.Respuesta_opcion_multiple_api
@@ -50,7 +51,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
 @Composable
-fun UpdateMCQuestionComponent(accion: String,viewModel: LessonsViewModel) {
+fun UpdateMCQuestionComponent(accion: String,viewModel: LessonsViewModel, navController: NavController) {
     Column (modifier = Modifier
         .fillMaxSize()
         .background(LightGreen),
@@ -90,9 +91,77 @@ fun UpdateMCQuestionComponent(accion: String,viewModel: LessonsViewModel) {
         MCIncorrectAnswer3(modifier = Modifier, viewModel)
 
         Row {
-            ButtonUpdate(function = { viewModel.updatedMCQuestion= Pregunta_opcion_multiple_Api() }, texto = "CANCELAR")
-            ButtonUpdate(function = { viewModel.updatedMCQuestion= Pregunta_opcion_multiple_Api() }, texto = "CONFIRMAR")
-            ButtonUpdate(function = { viewModel.updatedMCQuestion= Pregunta_opcion_multiple_Api() }, texto = "AGREGAR OTRA PREGUNTA")
+            ButtonUpdate(function =
+            { //Navigating to home
+                navController.navigate(route = Screens.Home.screen)
+
+                                    }, texto = "CANCELAR")
+            ButtonUpdate(
+                function =
+                { viewModel.updatedMCQuestion.id?.let {
+                    viewModel.updateMCQuestion(viewModel.updatedMCQuestion, it)
+                }
+                    viewModel.updatedMCQuestion= Pregunta_opcion_multiple_Api()
+
+
+
+                    //Answer correct
+                    viewModel.updatedMCCAnswer.id?.let {
+                        viewModel.updateMCAnswer(viewModel.updatedMCCAnswer, it)
+                    }
+                    viewModel.updatedMCCAnswer= Respuesta_opcion_multiple_api(correcta = true)
+
+
+
+                    //Answer incorrect 1
+                    viewModel.updatedMCIAnswer1.id?.let {
+                        viewModel.updateMCAnswer(viewModel.updatedMCIAnswer1, it)
+                    }
+                    viewModel.updatedMCIAnswer1= Respuesta_opcion_multiple_api(correcta = false)
+
+
+
+                    //Answer incorrect 2
+                    viewModel.updatedMCIAnswer2.id?.let {
+                        viewModel.updateMCAnswer(viewModel.updatedMCIAnswer2, it)
+                    }
+                    viewModel.updatedMCIAnswer2= Respuesta_opcion_multiple_api(correcta = false)
+
+
+                    //Answer incorrect 3
+                    viewModel.updatedMCIAnswer3.id?.let {
+                        viewModel.updateMCAnswer(viewModel.updatedMCIAnswer3, it)
+                    }
+                    viewModel.updatedMCIAnswer3= Respuesta_opcion_multiple_api(correcta = false)
+
+                    //Navigating to home
+                    navController.navigate(route = Screens.Home.screen)
+
+
+
+
+
+
+
+
+
+
+
+                                    },
+                texto = "CONFIRMAR")
+            ButtonUpdate(function =
+            { viewModel.updatedMCQuestion= Pregunta_opcion_multiple_Api()
+                viewModel.updatedMCCAnswer= Respuesta_opcion_multiple_api(correcta = true)
+                viewModel.updatedMCIAnswer1= Respuesta_opcion_multiple_api(correcta = false)
+                viewModel.updatedMCIAnswer2= Respuesta_opcion_multiple_api(correcta = false)
+                viewModel.updatedMCIAnswer3= Respuesta_opcion_multiple_api(correcta = false)
+
+
+
+
+
+            },
+                texto = "AGREGAR OTRA PREGUNTA")
 
 
         }
@@ -199,10 +268,10 @@ fun ButtonUpdateQuiz(function : ()->Unit,texto :String) {
     }
 }
 
-
+/*
 @Composable
 @Preview
 fun UpdateQuizComponentPreview(){
-    UpdateMCQuestionComponent("Agregar", viewModel = LessonsViewModel(application = Application()) )
+    UpdateMCQuestionComponent("Agregar", viewModel = LessonsViewModel(application = Application()), navController)
 }
-
+*/

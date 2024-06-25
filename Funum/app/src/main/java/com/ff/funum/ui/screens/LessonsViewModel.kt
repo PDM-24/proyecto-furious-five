@@ -322,9 +322,10 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
 
 
     var updatedMCQuestion : Pregunta_opcion_multiple_Api = Pregunta_opcion_multiple_Api()
-    fun updateMCQuestion(question: Pregunta_opcion_multiple_Api, idMCQuestion:String="", token:String){
+    fun updateMCQuestion(question: Pregunta_opcion_multiple_Api, idMCQuestion:String=""){
         viewModelScope.launch(Dispatchers.IO){
             try {
+                val token = repository.getToken()
                 val response = api.updateMCQuestion(question, idMCQuestion, "Bearer $token")
 
                 Log.i("MainViewModel",response.toString())
@@ -341,6 +342,26 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+
+    fun updateMCAnswer(answer: Respuesta_opcion_multiple_api, idMCAnswer:String=""){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val token = repository.getToken()
+                val response = token?.let { api.updateMCAnswer(answer, idMCAnswer, it) }
+
+                Log.i("MainViewModel",response.toString())
+            }catch (e:Exception){
+                when(e){
+                    is retrofit2.HttpException -> {
+                        e.message?.let { Log.i("MainViewmodel", it) }
+                    }
+                    else -> {
+                        Log.i("MainViewModel", e.toString())
+                    }
+                }
+            }
+        }
+    }
 
 
 
