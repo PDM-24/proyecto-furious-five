@@ -140,6 +140,16 @@ fun LessonCard(
                                             tint = White
                                         )
                                     }
+                                    Button(colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),onClick = {
+
+                                    }) {
+                                        Text(text = "Agregar examen", fontFamily = Chewy)
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.edit),
+                                            contentDescription = "Add examen",
+                                            tint = White
+                                        )
+                                    }
                                 }
                             }
                             lesson.topicList.forEachIndexed { topicIndex, topicAPI ->
@@ -273,6 +283,37 @@ fun LessonCard(
                                             navController.navigate(route = "${Screens.Quiz.screen}/${lesson.lessonExamList.first()}")
                                         }
                                 ) {
+                                    if (viewModel.admin) {
+                                        Row(
+                                            Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.End
+                                        ) {
+                                            Icon(painter = painterResource(id = R.drawable.edit),
+                                                contentDescription = "edit exam",
+                                                tint = White,
+                                                modifier = Modifier
+                                                    .padding(horizontal = 5.dp)
+                                                    .clickable {
+
+                                                    })
+                                            Icon(painter = painterResource(id = R.drawable.delete),
+                                                contentDescription = "delete exam",
+                                                tint = White,
+                                                modifier = Modifier
+                                                    .padding(horizontal = 5.dp)
+                                                    .clickable {
+                                                         })
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.visibility_off),
+                                                contentDescription = "topic exam",
+                                                tint = White,
+                                                modifier = Modifier
+                                                    .padding(horizontal = 5.dp)
+                                            )
+
+
+                                        }
+                                    }
                                     Text(
                                         text = "Quiz",
                                         modifier = Modifier
@@ -369,6 +410,16 @@ fun LessonCard(
                                         Icon(
                                             painter = painterResource(id = R.drawable.edit),
                                             contentDescription = "Add tema",
+                                            tint = White
+                                        )
+                                    }
+                                    Button(colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),onClick = {
+
+                                    }) {
+                                        Text(text = "Agregar examen", fontFamily = Chewy)
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.edit),
+                                            contentDescription = "Add examen",
                                             tint = White
                                         )
                                     }
@@ -508,6 +559,37 @@ fun LessonCard(
                                             navController.navigate(route = "${Screens.Quiz.screen}/${lesson.lessonExamList.first()}")
                                         }
                                 ) {
+                                    if (viewModel.admin) {
+                                        Row(
+                                            Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.End
+                                        ) {
+                                            Icon(painter = painterResource(id = R.drawable.edit),
+                                                contentDescription = "edit exam",
+                                                tint = White,
+                                                modifier = Modifier
+                                                    .padding(horizontal = 5.dp)
+                                                    .clickable {
+
+                                                    })
+                                            Icon(painter = painterResource(id = R.drawable.delete),
+                                                contentDescription = "delete exam",
+                                                tint = White,
+                                                modifier = Modifier
+                                                    .padding(horizontal = 5.dp)
+                                                    .clickable {
+                                                         })
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.visibility),
+                                                contentDescription = "Exam visibility",
+                                                tint = White,
+                                                modifier = Modifier
+                                                    .padding(horizontal = 5.dp)
+                                            )
+
+
+                                        }
+                                    }
                                     Text(
                                         text = "Quiz",
                                         modifier = Modifier
