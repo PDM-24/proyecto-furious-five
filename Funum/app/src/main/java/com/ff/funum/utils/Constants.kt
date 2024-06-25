@@ -5,7 +5,9 @@ object Constants {
     // Modificar la BASE_URL para cada uno al probar con la API
 
 
+
     const val BASE_URL = "http://192.168.1.2:3500"
+
 
 
     const val API_PATH = "/api"
@@ -30,11 +32,41 @@ object Constants {
     // Update Lesson
     const val Update_Lesson_Path="/"
 
+
+    //exams path constants
+    //const val Update_Quiz_Path="/"
+
     //Toggle Lesson visibilty
     const val Toggle_Lesson_Visibility_Path="/visibility/"
 
     //Delete Lesson
     const val Delete_Lesson_Path="/"
+
+    //constants
+    //For all type of questions
+    const val Get_Questions_Path="/questionMultiple/"
+
+    //MCquestion path constants
+    const val Update_MCQuestion_Path="/questionMultiple/"
+    const val Delete_MCQuestion_Path="/questionMultiple/"
+    //MCanswer path constants
+    const val Update_MCAnswer_Path="/questionMultipleAnswer/"
+    const val Delete_MCAnswer_Path="/questionMultipleAnswer/"
+
+    //MtQuestion path constants
+    const val Update_MtQuestion_Path="/questionMatch/"
+    const val Delete_MtQuestion_Path="/questionMatch/"
+    //Mtanswer path constants
+    const val Update_MtAnswer_Path="/questionMatch/"
+    const val Delete_MtAnswer_Path="/questionMatch/"
+
+
+
+
+
+
+
+
 
     const val LESSON_ID = "_id"
     const val LESSON_VISIBILITY = "visibilidad"

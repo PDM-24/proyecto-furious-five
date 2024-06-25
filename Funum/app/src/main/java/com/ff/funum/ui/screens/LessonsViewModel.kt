@@ -17,6 +17,7 @@ import com.ff.funum.data.api.AdminSaveExam
 import com.ff.funum.data.api.ApiClient
 import com.ff.funum.data.api.DeleteTopic
 import com.ff.funum.data.api.EndExamBody
+import com.ff.funum.data.api.ExamApi
 import com.ff.funum.data.api.Lessons
 import com.ff.funum.data.api.Pregunta_match_api
 import com.ff.funum.data.api.Pregunta_opcion_multiple_Api
@@ -49,8 +50,12 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
     private val api = ApiClient.apiService
     private val repository = Repository(application)
 
+
+
+
     var rol: Boolean = true;
     var admin: Boolean = false;
+
     @SuppressLint("SuspiciousIndentation")
     fun getAllLessons() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -252,6 +257,9 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
     var updatedLesson :Lessons= Lessons()
     var lesson:Lessons=Lessons()
 
+
+
+
     //Update lesson
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun updateLesson(lesson: Lessons,idLesson:String="",visible:Boolean) {
@@ -276,6 +284,91 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
             }
         }
     }
+
+/*
+    //Gestiona la informacion de Update lesson screen
+    var updatedQuiz : myQuiz = myQuiz()
+
+    fun updateQuiz(quiz: myQuiz, idQuiz:String="", token:String, visible:Boolean) {
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val response = api.updatedQuiz(quiz, idQuiz, "Bearer $token")
+                if(visible!=response.visibility){
+                    val visibility = response.id?.let { api.toggleLessonVisibility(it,"Bearer $token") }
+                }
+
+                Log.i("MainViewModel",response.toString())
+            }catch (e:Exception){
+                when(e){
+                    is retrofit2.HttpException -> {
+                        e.message?.let { Log.i("MainViewmodel", it) }
+                    }
+                    else -> {
+                        Log.i("MainViewModel", e.toString())
+                    }
+                }
+            }
+        }
+    }
+*/
+
+
+    //Gestiona la informacion de Update lesson screen
+    var updatedMCCAnswer :Respuesta_opcion_multiple_api= Respuesta_opcion_multiple_api(correcta = true)
+    var updatedMCIAnswer1: Respuesta_opcion_multiple_api= Respuesta_opcion_multiple_api(correcta = false)
+    var updatedMCIAnswer2: Respuesta_opcion_multiple_api= Respuesta_opcion_multiple_api(correcta = false)
+    var updatedMCIAnswer3: Respuesta_opcion_multiple_api= Respuesta_opcion_multiple_api(correcta = false)
+
+
+
+    var updatedMCQuestion : Pregunta_opcion_multiple_Api = Pregunta_opcion_multiple_Api()
+    fun updateMCQuestion(question: Pregunta_opcion_multiple_Api, idMCQuestion:String=""){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val token = repository.getToken()
+                val response = api.updateMCQuestion(question, idMCQuestion, "Bearer $token")
+
+                Log.i("MainViewModel",response.toString())
+            }catch (e:Exception){
+                when(e){
+                    is retrofit2.HttpException -> {
+                        e.message?.let { Log.i("MainViewmodel", it) }
+                    }
+                    else -> {
+                        Log.i("MainViewModel", e.toString())
+                    }
+                }
+            }
+        }
+    }
+
+
+    fun updateMCAnswer(answer: Respuesta_opcion_multiple_api, idMCAnswer:String=""){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val token = repository.getToken()
+                val response = token?.let { api.updateMCAnswer(answer, idMCAnswer, it) }
+
+                Log.i("MainViewModel",response.toString())
+            }catch (e:Exception){
+                when(e){
+                    is retrofit2.HttpException -> {
+                        e.message?.let { Log.i("MainViewmodel", it) }
+                    }
+                    else -> {
+                        Log.i("MainViewModel", e.toString())
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
     //Toggle lesson visibility
     fun toggleLessonVisibility(idLesson:String="") {
         viewModelScope.launch(Dispatchers.IO){
@@ -411,6 +504,8 @@ class LessonsViewModel(application: Application) : AndroidViewModel(application)
 
         return Pair(leftColumn, rightColumn)
     }
+
+
 
     fun getExam(examId: String){
         viewModelScope.launch(Dispatchers.IO){

@@ -45,6 +45,7 @@ class Repository(private val context: Context) {
         return user
     }
 
+
     suspend fun fetchAvatars(): List<Avatar> {
         val token = getToken() ?: throw IllegalStateException("Token no disponible")
         Log.d("Repository", "Obteniendo avatares con token: $token")
@@ -106,6 +107,7 @@ class Repository(private val context: Context) {
 
 
 }
+
 
 
 

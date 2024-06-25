@@ -168,6 +168,57 @@ suspend fun changeAvatar(
         @Path("id") topicId: String?
     ): BeginEndLessonResponse
 
+
+
+
+
+    //for the MC questions
+    //Update MC Question
+    @Headers(value = ["Content-Type: application/json"])
+    @POST(value = Constants.API_PATH+Constants.EXAM_ROUTE+Constants.Update_MCQuestion_Path+"{id}")
+    suspend fun updateMCQuestion(@Body question: Pregunta_opcion_multiple_Api, @Path("id", encoded = false) idMCQuestion:String, @Header("authorization") token:String):Pregunta_opcion_multiple_Api
+    //Delete MC Question
+    @Headers(value = ["Content-Type: application/json"])
+    @DELETE(value = Constants.API_PATH+Constants.EXAM_ROUTE+Constants.Delete_MCQuestion_Path+"{id}")
+    suspend fun deleteMCQuestion(@Path("id", encoded = false) idMCQuestion: String,@Header("authorization") token:String):ApiResponseSuccessful
+    //Update MC Answer
+    @Headers(value = ["Content-Type: application/json"])
+    @POST(value = Constants.API_PATH+Constants.EXAM_ROUTE+Constants.Update_MCAnswer_Path+"{id}")
+    suspend fun updateMCAnswer(@Body answer: Respuesta_opcion_multiple_api, @Path("id", encoded = false) idMCAnswer:String, @Header("authorization") token:String):Respuesta_opcion_multiple_api
+    //Delete MC Answer
+    @Headers(value = ["Content-Type: application/json"])
+    @DELETE(value = Constants.API_PATH+Constants.EXAM_ROUTE+Constants.Delete_MCAnswer_Path+"{id}")
+    suspend fun deleteMCAnswer(@Path("id", encoded = false) idMCAnswer: String,@Header("authorization") token:String):ApiResponseSuccessful
+
+
+    //for the Mt questions
+    @Headers(value = ["Content-Type: application/json"])
+    @POST(value = Constants.API_PATH+Constants.EXAM_ROUTE+Constants.Update_MtQuestion_Path+"{id}")
+    suspend fun updateMtQuestion(@Body question: Pregunta_match_api, @Path("id", encoded = false) idMtQuestion:String, @Header("authorization") token:String):Pregunta_match_api
+    //Delete Mt Question
+    @Headers(value = ["Content-Type: application/json"])
+    @DELETE(value = Constants.API_PATH+Constants.EXAM_ROUTE+Constants.Delete_MtQuestion_Path+"{id}")
+    suspend fun deleteMtQuestion(@Path("id", encoded = false) idMtQuestion: String,@Header("authorization") token:String):ApiResponseSuccessful
+    //Update Mt Answer
+    @Headers(value = ["Content-Type: application/json"])
+    @POST(value = Constants.API_PATH+Constants.EXAM_ROUTE+Constants.Update_MtAnswer_Path+"{id}")
+    suspend fun updateMtAnswer(@Body answer: Respuesta_match_api, @Path("id", encoded = false) idMtAnswer:String, @Header("authorization") token:String):Respuesta_match_api
+    //Delete Mt Answer
+    @Headers(value = ["Content-Type: application/json"])
+    @DELETE(value = Constants.API_PATH+Constants.EXAM_ROUTE+Constants.Delete_MtAnswer_Path+"{id}")
+    suspend fun deleteMtAnswer(@Path("id", encoded = false) idMtAnswer: String,@Header("authorization") token:String):ApiResponseSuccessful
+
+
+
+
+
+
+
+
+
+
+
+
     @Headers(
         value = ["Content-Type: application/json"]
     )
@@ -182,4 +233,5 @@ suspend fun changeAvatar(
         @Body adminSaveExam: AdminSaveExam,
         @Header("authorization") token:String
     ): ExamApi
+
 }
